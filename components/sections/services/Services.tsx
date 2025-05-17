@@ -3,27 +3,27 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 const services = [
 	{
-		title: "More than 20 betting houses available",
+		title: "Más de 20 casas de apuestas disponibles",
 		description:
-			"We have more than 20 betting houses so you can carry out your operations in the best way.",
+			"Contamos con más de 20 casas de apuestas para que puedas realizar tus operaciones de la mejor manera.",
 		icon: Building2,
 	},
 	{
-		title: "12 different sports to bet on",
+		title: "12 deportes diferentes para apostar",
 		description:
-			"We have more than 12 sports so you can carry out your operations and obtain the highest profitability.",
+			"Contamos con más de 12 deportes para que puedas realizar tus operaciones y obtener la mayor rentabilidad.",
 		icon: Activity,
 	},
 	{
-		title: "Smart surebet calculator",
+		title: "Calculadora inteligente de surebets",
 		description:
-			"We have an intelligent calculator to facilitate operations when it comes to making a profit.",
+			"Disponemos de una calculadora inteligente para facilitar las operaciones al momento de obtener ganancias.",
 		icon: Calculator,
 	},
 	{
-		title: "Productivity tools for betting",
+		title: "Herramientas de productividad para apuestas",
 		description:
-			"We have various tools that will help improve your productivity and efficiency.",
+			"Contamos con varias herramientas que te ayudarán a mejorar tu productividad y eficiencia.",
 		icon: Tool,
 	},
 ]
@@ -38,14 +38,13 @@ export default function Services() {
 				<div className="flex flex-col items-center justify-center space-y-6 text-center">
 					<div className="space-y-3">
 						<h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-							Services
+							Servicios
 						</h2>
 						<div className="flex justify-center">
 							<div className="w-16 h-1 bg-gradient-to-r from-teal-500 to-blue-600 rounded-full"></div>
 						</div>
 						<p className="max-w-[900px] mx-auto text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-							We have a wide range of services so you can invest and generate
-							money safely and reliably.
+							Tenemos una amplia gama de servicios para que puedas invertir y generar dinero de forma segura y confiable.
 						</p>
 					</div>
 				</div>
@@ -69,11 +68,7 @@ export default function Services() {
 				<div className="mt-20 text-center">
 					<div className="max-w-3xl mx-auto p-8 rounded-xl bg-card border shadow-md bg-gradient-to-r from-teal-500/5 to-blue-600/5">
 						<p className="italic text-muted-foreground text-lg">
-							&quot;This software is an interactive platform that will allow you
-							to manage and visualize surebets in real time and prior to the
-							event, customizing your experience through specific filters and
-							configurations. It is designed to offer an intuitive and adaptable
-							interface, focused on efficiency and ease of use.&quot;
+							&quot;Este software es una plataforma interactiva que te permitirá gestionar y visualizar surebets en tiempo real y antes del evento, personalizando tu experiencia mediante filtros y configuraciones específicas. Está diseñado para ofrecer una interfaz intuitiva y adaptable, enfocada en la eficiencia y facilidad de uso.&quot;
 						</p>
 					</div>
 				</div>

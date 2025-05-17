@@ -6,14 +6,14 @@ export default function CTA() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
         <div className="flex flex-col items-center justify-center space-y-6 text-center">
           <div className="space-y-4">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Start your free trial</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Comienza tu prueba gratuita</h2>
             <p className="max-w-[600px] mx-auto text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              We offer 1 day free so you can test the functionality of our scanner.
+              Ofrecemos 1 día gratis para que puedas probar la funcionalidad de nuestro escáner.
             </p>
           </div>
           <div className="w-full max-w-sm space-y-2">
             <Button size="lg" className="w-full bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 shadow-lg">
-              Request your demo
+              Solicita tu demo
             </Button>
           </div>
         </div>

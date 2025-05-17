@@ -5,41 +5,41 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 const plans30days = [
   {
-    name: "Live",
+    name: "En vivo",
     price: "$89.90",
-    description: "Perfect for live events",
+    description: "Perfecto para eventos en vivo",
     features: [
-      "Live events",
-      "Surebet calculator",
-      "Custom filters",
-      "Currency exchange",
-      "User-friendly interface",
+      "Eventos en vivo",
+      "Calculadora de surebets",
+      "Filtros personalizados",
+      "Cambio de divisa",
+      "Interfaz amigable",
     ],
     popular: false,
   },
   {
-    name: "Full",
+    name: "Completo",
     price: "$99.90",
-    description: "Complete access to all features",
+    description: "Acceso completo a todas las funciones",
     features: [
-      "Live and prematch events",
-      "Surebet calculator",
-      "Custom filters",
-      "Currency exchange",
-      "User-friendly interface",
+      "Eventos en vivo y prematch",
+      "Calculadora de surebets",
+      "Filtros personalizados",
+      "Cambio de divisa",
+      "Interfaz amigable",
     ],
     popular: true,
   },
   {
     name: "Prematch",
     price: "$59.90",
-    description: "For prematch events only",
+    description: "Solo para eventos prematch",
     features: [
-      "Prematch events",
-      "Surebet calculator",
-      "Custom filters",
-      "Currency exchange",
-      "User-friendly interface",
+      "Eventos prematch",
+      "Calculadora de surebets",
+      "Filtros personalizados",
+      "Cambio de divisa",
+      "Interfaz amigable",
     ],
     popular: false,
   },
@@ -48,9 +48,9 @@ const plans30days = [
 // Nuevos planes de 15 días
 const plans15days = [
   {
-    name: "Live",
+    name: "En vivo",
     price: "$79.90",
-    description: "Eventos live",
+    description: "Eventos en vivo",
     features: [
       "Calculadora de surebets",
       "Filtros personalizados",
@@ -60,9 +60,9 @@ const plans15days = [
     popular: false,
   },
   {
-    name: "Full",
+    name: "Completo",
     price: "$89.90",
-    description: "Eventos live y prematch",
+    description: "Eventos en vivo y prematch",
     features: [
       "Calculadora de surebets",
       "Filtros personalizados",
@@ -92,21 +92,21 @@ export default function Plans() {
         <div className="flex flex-col items-center justify-center space-y-6 text-center">
           <div className="space-y-3">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-              Plans
+              Planes
             </h2>
             <div className="flex justify-center">
               <div className="w-16 h-1 bg-gradient-to-r from-teal-500 to-blue-600 rounded-full"></div>
             </div>
             <p className="max-w-[900px] mx-auto text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              We have various plans to adapt to your needs.
+              Tenemos varios planes para adaptarnos a tus necesidades.
             </p>
           </div>
         </div>
 
         <Tabs defaultValue="30days" className="w-full max-w-5xl mx-auto mt-10">
           <TabsList className="grid w-full grid-cols-2 shadow-sm">
-            <TabsTrigger value="15days">15 days</TabsTrigger>
-            <TabsTrigger value="30days">30 days</TabsTrigger>
+            <TabsTrigger value="15days">15 días</TabsTrigger>
+            <TabsTrigger value="30days">30 días</TabsTrigger>
           </TabsList>
           
           {/* Contenido para los planes de 15 días */}

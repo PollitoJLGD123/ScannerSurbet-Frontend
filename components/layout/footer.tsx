@@ -11,18 +11,18 @@ export default function Footer() {
             </span>
           </Link>
           <p className="text-sm text-muted-foreground mt-2">
-            © {new Date().getFullYear()} Arbisure. All rights reserved.
+            © {new Date().getFullYear()} Arbisure. Todos los derechos reservados.
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
           <Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-            Terms of Service
+            Términos de Servicio
           </Link>
           <Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-            Privacy Policy
+            Política de Privacidad
           </Link>
           <Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-            Contact
+            Contacto
           </Link>
         </div>
       </div>

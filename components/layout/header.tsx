@@ -7,10 +7,10 @@ import { ModeToggle } from "../mode-toggle"
 import { Menu, X } from "lucide-react"
 
 const navItems = [
-  { name: "Home", href: "#home" },
-  { name: "Services", href: "#services" },
-  { name: "Plans", href: "#plans" },
-  { name: "FAQ", href: "#faq" },
+  { name: "Inicio", href: "#home" },
+  { name: "Servicios", href: "#services" },
+  { name: "Planes", href: "#plans" },
+  { name: "Preguntas", href: "#faq" },
 ]
 
 export default function Header() {
@@ -74,13 +74,13 @@ export default function Header() {
         <div className="hidden md:flex items-center gap-4">
           <ModeToggle />
           <Button variant="outline" size="sm">
-            Login
+            Iniciar sesión
           </Button>
           <Button
             size="sm"
             className="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700"
           >
-            Register
+            Registrarse
           </Button>
         </div>
 
@@ -91,7 +91,7 @@ export default function Header() {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
           >
-            <span className="sr-only">Open main menu</span>
+            <span className="sr-only">Abrir menú principal</span>
             {mobileMenuOpen ? (
               <X className="h-6 w-6" aria-hidden="true" />
             ) : (
@@ -120,13 +120,13 @@ export default function Header() {
             ))}
             <div className="flex flex-col gap-3 mt-6 px-1">
               <Button variant="outline" size="lg" className="w-full border-2">
-                Login
+                Iniciar sesión
               </Button>
               <Button
                 size="lg"
                 className="w-full bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 shadow-md"
               >
-                Register
+                Registrarse
               </Button>
             </div>
           </div>

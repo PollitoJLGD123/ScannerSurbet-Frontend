@@ -9,17 +9,17 @@ export default function Hero() {
           <div className="flex flex-col justify-center space-y-4">
             <div className="space-y-4">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300">
-                Real-Time Surebets Software
+                Software de Surebets en Tiempo Real
               </h1>
               <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                Maximize your profits with us, learn to invest and generate money safely and reliably.
+                Maximiza tus ganancias con nosotros, aprende a invertir y genera dinero de forma segura y confiable.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2">
               <Button size="lg" className="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white shadow-md">
-                Register Now
+                Regístrate Ahora
               </Button>
-              <Button size="lg" variant="outline" className="border-2 shadow-sm">Learn More</Button>
+              <Button size="lg" variant="outline" className="border-2 shadow-sm">Saber más</Button>
             </div>
           </div>
           <div className="flex justify-center">
@@ -36,7 +36,7 @@ export default function Hero() {
           </div>
         </div>
         <div className="mt-20 text-center">
-          <h2 className="text-2xl font-bold mb-4">Generate profits with real-time surebets</h2>
+          <h2 className="text-2xl font-bold mb-4">Genera ganancias con surebets en tiempo real</h2>
           <div className="flex justify-center">
             <div className="w-24 h-1 bg-gradient-to-r from-teal-500 to-blue-600 rounded-full"></div>
           </div>

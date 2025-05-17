@@ -2,24 +2,24 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 const faqs = [
   {
-    question: "Do you have a trial period?",
+    question: "¿Tienen un período de prueba?",
     answer:
-      "Yes, we offer a 1-day free trial so you can test the functionality of our scanner. You can request your demo from our website.",
+      "Sí, ofrecemos una prueba gratuita de 1 día para que puedas probar la funcionalidad de nuestro escáner. Puedes solicitar tu demo desde nuestro sitio web.",
   },
   {
-    question: "What do surebets mean?",
+    question: "¿Qué significa surebet?",
     answer:
-      "Surebets are betting opportunities that guarantee a profit regardless of the outcome. They occur when bookmakers offer different odds for the same event, allowing bettors to place wagers on all possible outcomes and secure a profit.",
+      "Las surebets son oportunidades de apuesta que garantizan una ganancia sin importar el resultado. Ocurren cuando las casas de apuestas ofrecen diferentes cuotas para el mismo evento, permitiendo apostar a todos los resultados posibles y asegurar un beneficio.",
   },
   {
-    question: "What are Prematch and Live surebets?",
+    question: "¿Qué son las surebets Prematch y Live?",
     answer:
-      "Prematch surebets are betting opportunities available before an event starts, while Live surebets occur during the event. Our platform offers tools for both types, allowing you to maximize your profits in different scenarios.",
+      "Las surebets prematch son oportunidades de apuesta disponibles antes de que comience un evento, mientras que las surebets live ocurren durante el evento. Nuestra plataforma ofrece herramientas para ambos tipos, permitiéndote maximizar tus ganancias en diferentes escenarios.",
   },
   {
-    question: "How much can I earn?",
+    question: "¿Cuánto puedo ganar?",
     answer:
-      "Earnings vary based on your investment amount, the frequency of your bets, and market conditions. Many of our users report consistent profits of 5-15% on their investments, but results can vary.",
+      "Las ganancias varían según tu monto de inversión, la frecuencia de tus apuestas y las condiciones del mercado. Muchos de nuestros usuarios reportan beneficios constantes del 5-15% en sus inversiones, pero los resultados pueden variar.",
   },
 ]
 
@@ -29,7 +29,7 @@ export default function Faq() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-center space-y-6 text-center">
           <div className="space-y-3">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Frequently Asked Questions</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Preguntas Frecuentes</h2>
             <div className="flex justify-center">
               <div className="w-16 h-1 bg-gradient-to-r from-teal-500 to-blue-600 rounded-full"></div>
             </div>
