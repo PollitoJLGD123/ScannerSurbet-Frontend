@@ -115,12 +115,12 @@ export default function Plans() {
               {plans15days.map((plan, index) => (
                 <Card
                   key={index}
-                  className={`flex flex-col ${
+                  className={`flex flex-col relative ${
                     plan.popular ? "border-primary shadow-lg" : ""
                   }`}
                 >
                   {plan.popular && (
-                    <div className="absolute top-0 right-0 transform translate-x-2 -translate-y-2">
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
                       <span className="bg-primary text-primary-foreground text-xs px-2 py-1 rounded-md">
                         Más Popular
                       </span>
@@ -168,14 +168,14 @@ export default function Plans() {
               {plans30days.map((plan, index) => (
                 <Card
                   key={index}
-                  className={`flex flex-col ${
+                  className={`flex flex-col relative ${
                     plan.popular ? "border-primary shadow-lg" : ""
                   }`}
                 >
                   {plan.popular && (
-                    <div className="absolute top-0 right-0 transform translate-x-2 -translate-y-2">
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
                       <span className="bg-primary text-primary-foreground text-xs px-2 py-1 rounded-md">
-                        Most Popular
+                        Más Popular
                       </span>
                     </div>
                   )}
