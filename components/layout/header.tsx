@@ -47,7 +47,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center">
             <span className="text-2xl font-bold bg-gradient-to-r from-teal-500 to-blue-600 bg-clip-text text-transparent">
@@ -57,13 +57,13 @@ export default function Header() {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-8">
           {navItems.map((item) => (
             <button
               key={item.name}
               onClick={() => scrollToSection(item.href)}
               className={`text-sm font-medium transition-colors hover:text-primary ${
-                activeSection === item.href.replace("#", "") ? "text-primary" : "text-muted-foreground"
+                activeSection === item.href.replace("#", "") ? "text-primary font-semibold" : "text-muted-foreground"
               }`}
             >
               {item.name}
@@ -104,27 +104,27 @@ export default function Header() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden">
-          <div className="space-y-1 px-4 pb-3 pt-2">
+          <div className="space-y-2 px-4 pb-4 pt-2 border-t">
             {navItems.map((item) => (
               <button
                 key={item.name}
                 onClick={() => scrollToSection(item.href)}
-                className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${
+                className={`block w-full text-left px-4 py-3 rounded-md text-base font-medium transition-colors ${
                   activeSection === item.href.replace("#", "")
-                    ? "bg-primary/10 text-primary"
+                    ? "bg-gradient-to-r from-teal-500/10 to-blue-600/10 text-primary font-semibold"
                     : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                 }`}
               >
                 {item.name}
               </button>
             ))}
-            <div className="flex flex-col gap-2 mt-4">
-              <Button variant="outline" size="sm">
+            <div className="flex flex-col gap-3 mt-6 px-1">
+              <Button variant="outline" size="lg" className="w-full border-2">
                 Login
               </Button>
               <Button
-                size="sm"
-                className="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700"
+                size="lg"
+                className="w-full bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 shadow-md"
               >
                 Register
               </Button>

@@ -1,4 +1,3 @@
-
 @import "tw-animate-css";
 @import "tailwindcss";
 
@@ -62,6 +61,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem; /* Para que los anclas tengan en cuenta el header fijo */
 }
 
 @theme inline {
@@ -102,16 +102,21 @@ html {
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* Colores para Arbisure en formato OKLCH */
 :root {
   --radius: 0.625rem;
+  /* Colores base */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  
+  /* Color primario - Teal/Azul-verde */
+  --primary: oklch(0.65 0.15 195); /* Aproximación de teal en OKLCH */
   --primary-foreground: oklch(0.985 0 0);
+  
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -121,22 +126,27 @@ html {
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --ring: oklch(0.65 0.15 195); /* Mismo que el primario */
+  
+  /* Colores para gráficos */
   --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-2: oklch(0.6 0.118 184.704); /* Azul */
+  --chart-3: oklch(0.65 0.15 195); /* Teal - igual que primario */
+  --chart-4: oklch(0.55 0.18 210); /* Azul más oscuro */
   --chart-5: oklch(0.769 0.188 70.08);
+  
+  /* Colores para barra lateral */
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary: oklch(0.65 0.15 195); /* Teal - igual que primario */
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar-ring: oklch(0.65 0.15 195); /* Teal - igual que primario */
 }
 
+/* Modo oscuro */
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -144,8 +154,11 @@ html {
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
+  
+  /* Color primario en modo oscuro - más brillante */
+  --primary: oklch(0.7 0.18 195); /* Teal más brillante */
   --primary-foreground: oklch(0.205 0 0);
+  
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
@@ -155,20 +168,24 @@ html {
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --ring: oklch(0.7 0.18 195); /* Igual que primario */
+  
+  /* Colores para gráficos en modo oscuro */
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-3: oklch(0.7 0.18 195); /* Teal - igual que primario */
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
+  
+  /* Colores para barra lateral en modo oscuro */
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary: oklch(0.7 0.18 195); /* Teal - igual que primario */
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar-ring: oklch(0.7 0.18 195); /* Igual que primario */
 }
 
 @layer base {

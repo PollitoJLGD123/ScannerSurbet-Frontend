@@ -4,22 +4,22 @@ import Image from "next/image"
 export default function Hero() {
   return (
     <section id="home" className="w-full py-12 md:py-24 lg:py-32">
-      <div className="container px-4 md:px-6">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
           <div className="flex flex-col justify-center space-y-4">
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
+            <div className="space-y-4">
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300">
                 Real-Time Surebets Software
               </h1>
               <p className="max-w-[600px] text-muted-foreground md:text-xl">
                 Maximize your profits with us, learn to invest and generate money safely and reliably.
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-              <Button className="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2">
+              <Button size="lg" className="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white shadow-md">
                 Register Now
               </Button>
-              <Button variant="outline">Learn More</Button>
+              <Button size="lg" variant="outline" className="border-2 shadow-sm">Learn More</Button>
             </div>
           </div>
           <div className="flex justify-center">
@@ -35,10 +35,10 @@ export default function Hero() {
             </div>
           </div>
         </div>
-        <div className="mt-16 text-center">
+        <div className="mt-20 text-center">
           <h2 className="text-2xl font-bold mb-4">Generate profits with real-time surebets</h2>
           <div className="flex justify-center">
-            <div className="w-20 h-1 bg-gradient-to-r from-teal-500 to-blue-600 rounded-full"></div>
+            <div className="w-24 h-1 bg-gradient-to-r from-teal-500 to-blue-600 rounded-full"></div>
           </div>
         </div>
       </div>
