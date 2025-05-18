@@ -184,7 +184,7 @@ export default function Plans() {
                     <div className="flex items-baseline justify-center mt-2">
                       <span className="text-3xl font-bold">{plan.price}</span>
                       <span className="ml-1 text-muted-foreground">
-                        / 30 days
+                        / 30 días
                       </span>
                     </div>
                     <CardDescription>{plan.description}</CardDescription>
@@ -207,7 +207,7 @@ export default function Plans() {
                           : ""
                       }`}
                     >
-                      Buy Now
+                      Comprar
                     </Button>
                   </CardFooter>
                 </Card>
