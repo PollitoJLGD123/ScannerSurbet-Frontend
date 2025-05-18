@@ -3,7 +3,7 @@ import Image from "next/image"
 
 export default function Hero() {
   return (
-    <section id="home" className="w-full py-12 md:py-24 lg:py-32">
+    <section id="home" className="w-full py-12 md:py-24 lg:pt-24 lg:pb-32">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
           <div className="flex flex-col justify-center space-y-4">
@@ -22,10 +22,10 @@ export default function Hero() {
               <Button size="lg" variant="outline" className="border-2 shadow-sm">Saber más</Button>
             </div>
           </div>
-          <div className="flex justify-center">
-            <div className="relative w-full max-w-[500px] aspect-video rounded-xl overflow-hidden shadow-xl">
+          <div className="justify-self-center flex">
+            <div className="relative w-full max-w-[500px] aspect-video rounded-xl overflow-hidden">
               <Image
-                src="/placeholder.svg?height=500&width=800"
+                src="/earn_money_2.jpg"
                 alt="Arbisure Dashboard"
                 width={800}
                 height={500}
