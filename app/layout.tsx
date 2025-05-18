@@ -1,44 +1,44 @@
-import type { Metadata, Viewport } from "next"
+'use client';
+
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import Header from "@/components/layout/header"
-import Footer from "@/components/layout/footer"
+import MainLayout from "./layouts/MainLayout";
+import AuthLayout from "./layouts/AuthLayout";
+import DashboardLayout from "./layouts/DashboardLayout";
+import { usePathname } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] })
 
-export const metadata: Metadata = {
-  title: "Arbisure - Real-Time Surebets Service",
-  description: "Maximize your profits with Arbisure, learn to invest and generate money safely and reliably.",
-}
 
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" }
-  ]
-}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: {
+  children: React.ReactNode;
+}) {
+  const pathname = usePathname();
+  
+  const getLayout = () => {
+    if (pathname.startsWith("/login") || pathname.startsWith("/register")) {
+      return <AuthLayout>{children}</AuthLayout>;
+    }
+    
+    if (pathname.startsWith("/dashboard")) {
+      return <DashboardLayout>{children}</DashboardLayout>;
+    }
+    
+    // Layout predeterminado para rutas principales
+    return <MainLayout>{children}</MainLayout>;
+  };
+
   return (
-    <html lang="en" suppressHydrationWarning><body className={`${inter.className} antialiased min-h-screen flex flex-col`}>
+    <html lang="es" suppressHydrationWarning>
+      <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <div className="flex-grow">
-              {children}
-            </div>
-            <Footer />
-          </div>
+          {getLayout()}
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

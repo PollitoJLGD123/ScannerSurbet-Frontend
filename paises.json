@@ -1,0 +1,99 @@
+{
+  "paises": [
+    {
+      "nombre": "Argentina",
+      "codPais": "+54",
+      "cantDigitos": 10
+    },
+    {
+      "nombre": "Bolivia",
+      "codPais": "+591",
+      "cantDigitos": 8
+    },
+    {
+      "nombre": "Brasil",
+      "codPais": "+55",
+      "cantDigitos": 11
+    },
+    {
+      "nombre": "Canada",
+      "codPais": "+1",
+      "cantDigitos": 10
+    },
+    {
+      "nombre": "Chile",
+      "codPais": "+56",
+      "cantDigitos": 9
+    },
+    {
+      "nombre": "Colombia",
+      "codPais": "+57",
+      "cantDigitos": 10
+    },
+    {
+      "nombre": "Costa Rica",
+      "codPais": "+506",
+      "cantDigitos": 8
+    },
+    {
+      "nombre": "Cuba",
+      "codPais": "+53",
+      "cantDigitos": 8
+    },
+    {
+      "nombre": "Republica Dominicana",
+      "codPais": "+1",
+      "cantDigitos": 10
+    },
+    {
+      "nombre": "Ecuador",
+      "codPais": "+593",
+      "cantDigitos": 9
+    },
+    {
+      "nombre": "El Salvador",
+      "codPais": "+503",
+      "cantDigitos": 8
+    },
+    {
+      "nombre": "Honduras",
+      "codPais": "+504",
+      "cantDigitos": 8
+    },
+    {
+      "nombre": "Mexico",
+      "codPais": "+52",
+      "cantDigitos": 10
+    },
+    {
+      "nombre": "Panama",
+      "codPais": "+507",
+      "cantDigitos": 8
+    },
+    {
+      "nombre": "Paraguay",
+      "codPais": "+595",
+      "cantDigitos": 9
+    },
+    {
+      "nombre": "Peru",
+      "codPais": "+51",
+      "cantDigitos": 9
+    },
+    {
+      "nombre": "Puerto Rico",
+      "codPais": "+1",
+      "cantDigitos": 10
+    },
+    {
+      "nombre": "Uruguay",
+      "codPais": "+598",
+      "cantDigitos": 8
+    },
+    {
+      "nombre": "Venezuela",
+      "codPais": "+58",
+      "cantDigitos": 10
+    }
+  ]
+}

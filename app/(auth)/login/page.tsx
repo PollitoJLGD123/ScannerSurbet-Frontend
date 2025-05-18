@@ -36,15 +36,13 @@ export default function LoginPage() {
 
   async function onSubmit(data: LoginFormValues) {
     setIsLoading(true)
-
+    // Conexion con el backend
     try {
-      // Simulación de login - aquí se conectaría con el backend
+      
       console.log("Login data:", data)
 
-      // Simulamos un retraso para mostrar el estado de carga
       await new Promise((resolve) => setTimeout(resolve, 1000))
 
-      // Simulamos un login exitoso
       toast.success("Inicio de sesión exitoso", {
         description: "Bienvenido a Arbisure",
       });

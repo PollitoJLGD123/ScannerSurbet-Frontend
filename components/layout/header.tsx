@@ -74,13 +74,14 @@ export default function Header() {
         <div className="hidden md:flex items-center gap-4">
           <ModeToggle />
           <Button variant="outline" size="sm">
-            Iniciar sesión
+            <Link href="/login">Iniciar sesión</Link>
           </Button>
           <Button
             size="sm"
             className="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700"
           >
-            Registrarse
+            <Link href="/register">Registrarse</Link>
+            
           </Button>
         </div>
 
@@ -120,13 +121,13 @@ export default function Header() {
             ))}
             <div className="flex flex-col gap-3 mt-6 px-1">
               <Button variant="outline" size="lg" className="w-full border-2">
-                Iniciar sesión
+                <Link href="/login">Iniciar sesión</Link>
               </Button>
               <Button
                 size="lg"
                 className="w-full bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 shadow-md"
               >
-                Registrarse
+                <Link href="/register">Registrarse</Link>
               </Button>
             </div>
           </div>
