@@ -18,9 +18,11 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { toast } from "sonner"
 import { useUser } from "@/lib/userContext"
+import ModalChangePassword from "./users/modal_change_password"
 
 export function DashboardHeader() {
   const [isLoggingOut, setIsLoggingOut] = useState(false)
+  const [showPasswordModal, setShowPasswordModal] = useState(false)
   const { user, logout } = useUser()  // obtener Iniciales de nombre
   const getInitials = () => {
     if (!user) return '';
@@ -104,8 +106,7 @@ export function DashboardHeader() {
             { /*<DropdownMenuItem>
                 <User className="mr-2 h-4 w-4" />
                 <span>Perfil</span>
-              </DropdownMenuItem>*/} 
-              <DropdownMenuItem>
+              </DropdownMenuItem>*/}              <DropdownMenuItem onClick={() => setShowPasswordModal(true)}>
                 <Settings className="mr-2 h-4 w-4" />
                 <span>Cambiar contraseña</span>
               </DropdownMenuItem>
@@ -117,8 +118,13 @@ export function DashboardHeader() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        )}
-      </div>
+        )}      </div>
+
+      {/* Modal de cambio de contraseña */}
+      <ModalChangePassword 
+        isVisible={showPasswordModal} 
+        onClose={() => setShowPasswordModal(false)} 
+      />
     </header>
   )
 }
