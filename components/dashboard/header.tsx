@@ -91,7 +91,7 @@ export function DashboardHeader() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-8 flex items-center gap-2 rounded-full">
               <Avatar className="h-8 w-8">
-                <AvatarImage src="/placeholder.svg" alt={getFullName()} />
+                <AvatarImage src="/header-dash/user.png" alt={getFullName()} />
                 <AvatarFallback>{getInitials()}</AvatarFallback>
               </Avatar>
               <span className="hidden md:inline-flex">{getFullName()}</span>

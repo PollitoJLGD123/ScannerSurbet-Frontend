@@ -37,3 +37,8 @@ export interface DataCalculator {
     data: Surebet;
     setIsCalculated: (value: boolean) => void;
 }
+
+export interface MessageSocket {
+    type: string;
+    payload: Surebet[];
+}

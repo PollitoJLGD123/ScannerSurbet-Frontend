@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
@@ -11,8 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { DataCalculator } from "@/types/data.type"
-import { useMemo } from "react"
+import type { DataCalculator } from "@/types/data.type"
 
 export function Calculator({ data, setIsCalculated }: DataCalculator) {
     const [stakes, setStakes] = useState<Record<number, number>>({})
@@ -29,22 +28,26 @@ export function Calculator({ data, setIsCalculated }: DataCalculator) {
 
     // Inicializar stakes y checked al cargar el componente
     useEffect(() => {
-        const initialStakes: Record<string, number> = {}
-        const initialChecked : Record<string, boolean> = {}
+        const initialStakes: Record<number, number> = {}
+        const initialChecked: Record<string, boolean> = {}
         const initialGanancias: Record<number, number> = {}
         let number_surbet = 0
 
         sections.forEach((section) => {
-            number_surbet += 1/parseFloat(section.odds)
-        });
+            number_surbet += 1 / Number.parseFloat(section.odds)
+        })
 
         sections.forEach((section, index) => {
-            initialStakes[index] = parseFloat((totalStake / (number_surbet * parseFloat(section.odds))).toFixed(2))
+            initialStakes[index] = Number.parseFloat(
+                (totalStake / (number_surbet * Number.parseFloat(section.odds))).toFixed(2),
+            )
             initialChecked[index] = true
         })
 
         sections.forEach((section, index) => {
-            initialGanancias[index] = parseFloat((initialStakes[index] * parseFloat(section.odds) - totalStake).toFixed(2))
+            initialGanancias[index] = Number.parseFloat(
+                (initialStakes[index] * Number.parseFloat(section.odds) - totalStake).toFixed(2),
+            )
         })
 
         setStakes(initialStakes)
@@ -97,7 +100,7 @@ export function Calculator({ data, setIsCalculated }: DataCalculator) {
         sections.forEach((_, index) => {
             initialStakes[index] = Math.floor(100 / sections.length)
         })
-        setStakes(initialStakes)    
+        setStakes(initialStakes)
     }
 
     // Función para cambiar la moneda
@@ -134,12 +137,14 @@ export function Calculator({ data, setIsCalculated }: DataCalculator) {
     }
 
     return (
-        <Card className="md:w-[550px] ml-4 sticky top-4 bg-gray-900 border-gray-700 shadow-xl animate-in slide-in-from-right">
-            <CardHeader className="bg-gray-800 rounded-t-lg pb-2">
+        <Card className="md:w-[550px] ml-4 sticky top-4 border shadow-md animate-in slide-in-from-right duration-300">
+            <CardHeader className="pb-2">
                 <div className="flex justify-between items-center">
                     <div className="flex items-center gap-2">
-                        <CalculatorIcon className="h-5 w-5 text-green-500" />
-                        <CardTitle className="text-lg font-bold">Calculadora de Surbets</CardTitle>
+                        <CalculatorIcon className="h-5 w-5 text-primary" />
+                        <CardTitle className="text-lg font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                            Calculadora de Surbets
+                        </CardTitle>
                     </div>
                     <Button variant="ghost" size="icon" onClick={() => setIsCalculated(false)} className="h-8 w-8">
                         <X className="h-4 w-4" />
@@ -147,10 +152,10 @@ export function Calculator({ data, setIsCalculated }: DataCalculator) {
                 </div>
 
                 <div className="mt-2 flex items-center justify-between">
-                    <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/30">
+                    <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
                         {data?.header?.percent || "0%"} de beneficio
                     </Badge>
-                    <span className="text-sm text-gray-400">
+                    <span className="text-sm text-muted-foreground">
                         {data?.header?.home1 || "Equipo 1"} vs {data?.header?.home2 || "Equipo 2"}
                     </span>
                 </div>
@@ -187,7 +192,7 @@ export function Calculator({ data, setIsCalculated }: DataCalculator) {
 
                             {showExchangeRateInput ? (
                                 <div className="flex items-center gap-2">
-                                    <span className="text-xs text-gray-400">1 USD =</span>
+                                    <span className="text-xs text-muted-foreground">1 USD =</span>
                                     <Input
                                         type="number"
                                         value={exchangeRate}
@@ -196,13 +201,16 @@ export function Calculator({ data, setIsCalculated }: DataCalculator) {
                                         step="0.01"
                                         min="0.01"
                                     />
-                                    <span className="text-xs text-gray-400">PEN</span>
+                                    <span className="text-xs text-muted-foreground">PEN</span>
                                 </div>
                             ) : (
                                 <TooltipProvider>
                                     <Tooltip>
                                         <TooltipTrigger asChild>
-                                            <Badge variant="outline" className="bg-blue-500/10 text-blue-400 border-blue-500/30">
+                                            <Badge
+                                                variant="outline"
+                                                className="bg-secondary/10 text-secondary-foreground border-secondary/30"
+                                            >
                                                 1 USD = {exchangeRate.toFixed(2)} PEN
                                             </Badge>
                                         </TooltipTrigger>
@@ -215,26 +223,26 @@ export function Calculator({ data, setIsCalculated }: DataCalculator) {
                         </div>
                     </div>
 
-                    <div className="bg-gray-800/50 rounded-lg p-3">
+                    <div className="bg-card/50 rounded-lg p-4 border border-border/30 backdrop-blur-sm">
                         <div className="flex justify-between items-center">
                             <div>
-                                <p className="text-sm text-gray-400">Stake Total</p>
+                                <p className="text-sm text-muted-foreground">Stake Total</p>
                                 <p className="text-xl font-bold">
                                     {getCurrencySymbol(currency)} {totalStake.toFixed(2)}
                                 </p>
-                                <p className="text-xs text-gray-500">
+                                <p className="text-xs text-muted-foreground">
                                     {currency === "USD"
                                         ? `≈ S/ ${convertCurrency(totalStake, "PEN").toFixed(2)}`
                                         : `≈ $ ${convertCurrency(totalStake, "USD").toFixed(2)}`}
                                 </p>
                             </div>
-                            <ArrowRight className="h-5 w-5 text-gray-500 mx-2" />
+                            <ArrowRight className="h-5 w-5 text-muted-foreground mx-2" />
                             <div>
-                                <p className="text-sm text-gray-400">Ganancia Potencial</p>
-                                <p className={`text-xl font-bold ${totalProfit > 0 ? "text-green-500" : "text-red-500"}`}>
+                                <p className="text-sm text-muted-foreground">Ganancia Potencial</p>
+                                <p className={`text-xl font-bold ${totalProfit > 0 ? "text-green-500" : "text-destructive"}`}>
                                     {getCurrencySymbol(currency)} {totalProfit.toFixed(2)}
                                 </p>
-                                <p className="text-xs text-gray-500">
+                                <p className="text-xs text-muted-foreground">
                                     {currency === "USD"
                                         ? `≈ S/ ${convertCurrency(totalProfit, "PEN").toFixed(2)}`
                                         : `≈ $ ${convertCurrency(totalProfit, "USD").toFixed(2)}`}
@@ -244,11 +252,7 @@ export function Calculator({ data, setIsCalculated }: DataCalculator) {
                     </div>
 
                     <div className="flex gap-2">
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            className="w-1/2 bg-blue-500/10 border-blue-500/30 hover:bg-blue-500/20"
-                        >
+                        <Button variant="outline" size="sm" className="w-1/2 bg-primary/10 border-primary/30 hover:bg-primary/20">
                             <RefreshCw className="h-4 w-4 mr-2" />
                             Optimizar Stakes
                         </Button>
@@ -257,12 +261,12 @@ export function Calculator({ data, setIsCalculated }: DataCalculator) {
                         </Button>
                     </div>
 
-                    <Separator className="my-2 bg-gray-700" />
+                    <Separator className="my-2" />
 
-                    <div className="rounded-lg border border-gray-700 overflow-hidden">
+                    <div className="rounded-lg border overflow-hidden">
                         <Table>
-                            <TableHeader className="bg-gray-800">
-                                <TableRow className = "text-center">
+                            <TableHeader>
+                                <TableRow className="text-center">
                                     <TableHead>Casa</TableHead>
                                     <TableHead>Apuesta</TableHead>
                                     <TableHead>Cuota</TableHead>
@@ -273,10 +277,6 @@ export function Calculator({ data, setIsCalculated }: DataCalculator) {
                             </TableHeader>
                             <TableBody>
                                 {sections.map((section, index) => {
-                                    const stake = Number.parseFloat(stakes[index] || "0")
-                                    const odds = Number.parseFloat(section.odds || "0")
-                                    const profit = !isNaN(stake) && !isNaN(odds) ? (stake * odds - totalStake).toFixed(2) : "0.00"
-
                                     return (
                                         <TableRow key={index}>
                                             <TableCell className="font-medium">{section.book_name || "Casa"}</TableCell>
@@ -300,21 +300,21 @@ export function Calculator({ data, setIsCalculated }: DataCalculator) {
                                                     onCheckedChange={(value) => handleCheckChange(index, !!value)}
                                                 />
                                             </TableCell>
-                                            <TableCell className={ganancias[index] > 0 ? "text-green-500" : "text-red-500"}>
+                                            <TableCell className={ganancias[index] > 0 ? "text-green-500" : "text-destructive"}>
                                                 {getCurrencySymbol(currency)} {ganancias[index]}
                                             </TableCell>
                                         </TableRow>
                                     )
                                 })}
 
-                                <TableRow className="bg-gray-800/50 font-bold">
+                                <TableRow className="font-bold bg-muted/30">
                                     <TableCell colSpan={4} className="text-right">
                                         Total:
                                     </TableCell>
                                     <TableCell>
                                         {getCurrencySymbol(currency)} {totalStake.toFixed(2)}
                                     </TableCell>
-                                    <TableCell className={totalProfit > 0 ? "text-green-500" : "text-red-500"}>
+                                    <TableCell className={totalProfit > 0 ? "text-green-500" : "text-destructive"}>
                                         {getCurrencySymbol(currency)} {totalProfit.toFixed(2)}
                                     </TableCell>
                                 </TableRow>
@@ -322,7 +322,7 @@ export function Calculator({ data, setIsCalculated }: DataCalculator) {
                         </Table>
                     </div>
 
-                    <div className="text-xs text-gray-400 mt-2">
+                    <div className="text-xs text-muted-foreground mt-2 space-y-1">
                         <p>* Los stakes se expresan en {currency === "USD" ? "dólares ($)" : "soles (S/)"}</p>
                         <p>* La ganancia potencial se calcula en base a los stakes seleccionados.</p>
                         <p>* Tipo de cambio actual: 1 USD = {exchangeRate.toFixed(2)} PEN</p>
