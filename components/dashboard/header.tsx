@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { User, Settings, LogOut, ChevronDown } from "lucide-react"
+import { Settings, LogOut, ChevronDown } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
@@ -101,10 +101,10 @@ export function DashboardHeader() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+            { /*<DropdownMenuItem>
                 <User className="mr-2 h-4 w-4" />
                 <span>Perfil</span>
-              </DropdownMenuItem>
+              </DropdownMenuItem>*/} 
               <DropdownMenuItem>
                 <Settings className="mr-2 h-4 w-4" />
                 <span>Cambiar contraseña</span>
