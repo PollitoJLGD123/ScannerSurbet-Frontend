@@ -25,7 +25,6 @@ api.interceptors.response.use(
 
       if (!isLogout && typeof window !== 'undefined') {
         removeAuthCookie();
-        window.location.href = '/login?expired=true';
       }
     }
     return Promise.reject(error);

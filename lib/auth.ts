@@ -18,9 +18,37 @@ interface AuthPayload {
 }
 
 export async function login(data: LoginData): Promise<UserProfile> {
-  const res = await api.post<AuthResponse<AuthPayload>>('api/auth/login', data);
-  setAuthCookie(res.data.data.token);
-  return res.data.data.user;
+  try {
+    const res = await api.post<AuthResponse<AuthPayload>>('api/auth/login', data);
+    setAuthCookie(res.data.data.token);
+    return res.data.data.user;
+  } catch (error: unknown) {
+    if (typeof error === 'object' && error !== null) {
+      // Verificar error axios
+      const axiosError = error as { 
+        isAxiosError?: boolean;
+        response?: { 
+          data?: { 
+            message?: string 
+          },
+          status?: number
+        } 
+      };
+      
+      if (axiosError.isAxiosError && axiosError.response?.data?.message) {
+        const errorMessage = axiosError.response.data.message;
+        throw new Error(errorMessage);
+      }
+    }
+    
+    // Si es un error estándar, lo propagamos
+    if (error instanceof Error) {
+      throw error;
+    }
+    
+    // Para cualquier otro caso, creamos un nuevo error genérico
+    throw new Error("Error al iniciar sesión. Intente nuevamente.");
+  }
 }
 
 export async function register(data: RegisterData): Promise<UserProfile> {

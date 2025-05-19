@@ -36,16 +36,53 @@ export default function LoginPage() {
       password: "",
     },
   })
-
   async function onSubmit(data: LoginFormValues) {
     setIsLoading(true)
+    // Limpiar errores previos
+    form.clearErrors()
+    
     try {
       await login(data)
       toast.success('Inicio de sesión exitoso', { description: 'Bienvenido a Arbisure' })
       router.push('/dashboard')
     } catch (error: unknown) {
-      console.error('Error de inicio de sesión:', error)
-      toast.error('Error de inicio de sesión', { description: (error as Error).message || 'Credenciales incorrectas' })
+      
+      // Obtener el mensaje de error
+      let errorMessage = 'Credenciales incorrectas'
+      
+      if (error instanceof Error) {
+        errorMessage = error.message
+        
+        // Mapear mensajes de error específicos a campos del formulario
+        if (errorMessage.includes('Usuario no encontrado')) {
+          form.setError('correo', { 
+            type: 'manual', 
+            message: 'Usuario no registrado con este correo' 
+          })
+        } 
+        else if (errorMessage.includes('Contraseña incorrecta')) {
+          form.setError('password', { 
+            type: 'manual', 
+            message: 'Contraseña incorrecta' 
+          })
+        }
+        else if (errorMessage.includes('cuenta ha sido desactivada')) {
+          form.setError('correo', { 
+            type: 'manual', 
+            message: 'Cuenta desactivada. Contacte con soporte.' 
+          })
+        }
+        else {
+          // Para otros errores, mostrar notificación general
+          toast.error('Error de inicio de sesión', { 
+            description: errorMessage 
+          })
+        }
+      } else {
+        toast.error('Error de inicio de sesión', { 
+          description: 'Ha ocurrido un error inesperado' 
+        })
+      }
     } finally {
       setIsLoading(false)
     }
@@ -77,25 +114,37 @@ export default function LoginPage() {
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">Iniciar Sesión</CardTitle>
           <CardDescription className="text-center">Ingrese sus credenciales para acceder a su cuenta</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
+        </CardHeader>        <CardContent>          <Form {...form}>
+            <form onSubmit={async (e) => {
+              e.preventDefault();
+              
+              // Prevenir doble submits
+              if (isLoading) return;
+              
+              // Ejecutar el manejador de submit
+              await form.handleSubmit(onSubmit)(e);
+              
+              // Detener la propagación del evento después del manejo
+              e.stopPropagation();
+              return false;
+            }} className="space-y-4"><FormField
                 control={form.control}
                 name="correo"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Correo Electrónico</FormLabel>
                     <FormControl>
-                      <Input placeholder="correo@ejemplo.com" {...field} />
+                      <Input 
+                        placeholder="correo@ejemplo.com" 
+                        {...field} 
+                        className={form.formState.errors.correo ? "border-red-500 focus-visible:ring-red-500" : ""}
+                        disabled={isLoading}
+                      />
                     </FormControl>
-                    {/* Mensaje de error con tamaño de fuente más pequeño */}
-                    <FormMessage className="text-xs" />
+                    <FormMessage className="text-xs font-medium" />
                   </FormItem>
                 )}
-              />
-              <FormField
+              />              <FormField
                 control={form.control}
                 name="password"
                 render={({ field }) => (
@@ -103,13 +152,20 @@ export default function LoginPage() {
                     <FormLabel>Contraseña</FormLabel>
                     <FormControl>
                       <div className="relative">
-                        <Input type={showPassword ? "text" : "password"} placeholder="••••••••" {...field} />
+                        <Input 
+                          type={showPassword ? "text" : "password"} 
+                          placeholder="••••••••" 
+                          {...field} 
+                          className={form.formState.errors.password ? "border-red-500 focus-visible:ring-red-500" : ""}
+                          disabled={isLoading}
+                        />
                         <Button
                           type="button"
                           variant="ghost"
                           size="sm"
                           className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                           onClick={() => setShowPassword(!showPassword)}
+                          disabled={isLoading}
                         >
                           {showPassword ? (
                             <EyeOff className="h-4 w-4 text-muted-foreground" />
@@ -120,13 +176,21 @@ export default function LoginPage() {
                         </Button>
                       </div>
                     </FormControl>
-                    {/* Mensaje de error con tamaño de fuente más pequeño */}
-                    <FormMessage className="text-xs" />
+                    <FormMessage className="text-xs font-medium" />
                   </FormItem>
                 )}
-              />
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
+              />              <Button 
+                type="submit" 
+                className="w-full bg-gradient-to-r from-green-700 to-green-900 hover:from-green-800 hover:to-green-950 text-white" 
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                    <span>Iniciando sesión...</span>
+                  </div>
+                ) : (
+                  "Iniciar Sesión"                )}
               </Button>
             </form>
           </Form>
