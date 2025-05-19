@@ -13,6 +13,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { login } from '@/lib/auth'
 
 const loginSchema = z.object({
   correo: z.string().email("Ingrese un correo electrónico válido"),
@@ -36,24 +37,13 @@ export default function LoginPage() {
 
   async function onSubmit(data: LoginFormValues) {
     setIsLoading(true)
-    // Conexion con el backend
     try {
-      
-      console.log("Login data:", data)
-
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      toast.success("Inicio de sesión exitoso", {
-        description: "Bienvenido a Arbisure",
-      });
-
-      // redirección
-      router.push("/dashboard")
-    } catch (error) {
-      console.error("Error de inicio de sesión:", error)
-      toast.error("Error de inicio de sesión", {
-        description: "Credenciales incorrectas. Por favor, inténtelo de nuevo.",
-      });
+      await login(data)
+      toast.success('Inicio de sesión exitoso', { description: 'Bienvenido a Arbisure' })
+      router.push('/dashboard')
+    } catch (error: unknown) {
+      console.error('Error de inicio de sesión:', error)
+      toast.error('Error de inicio de sesión', { description: (error as Error).message || 'Credenciales incorrectas' })
     } finally {
       setIsLoading(false)
     }

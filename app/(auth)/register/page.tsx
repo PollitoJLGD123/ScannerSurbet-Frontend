@@ -13,6 +13,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "sonner"
+import { register as registerUser } from '@/lib/auth'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 
 // datos de países
@@ -161,7 +162,6 @@ export default function RegistroPage() {
       apellidos: "",
       correo: "",
       password: "",
-      confirmPassword: "",
       pais: "",
       codPais: "",
       celular: "",
@@ -184,24 +184,17 @@ export default function RegistroPage() {
     setIsLoading(true)
 
     try {
-      // simulacion de conexion backend
-      console.log("Registro data:", data)
-
-      // simulacion de estado de carga
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-
-      // simulacion de registro exitoso
-      toast.success("Registro exitoso", {
-        description: "Su cuenta ha sido creada correctamente",
-      });
-
-      router.push("/login")
-    } catch (error) {
-      console.error("Error de registro:", error)
-      toast.error("Error de registro",{
-        description:"No se pudo completar el registro. Por favor, inténtelo de nuevo.",
-      })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { confirmPassword: _confirmPassword, ...registrationData } = data
       
+      await registerUser(registrationData)
+      
+      toast.success('Registro exitoso', { description: 'Su cuenta ha sido creada correctamente' })
+      router.push('/dashboard')
+    } catch (error: unknown) {
+      console.error('Error de registro:', error)
+      const message = error instanceof Error ? error.message : 'Ocurrió un error al crear la cuenta'
+      toast.error('Error de registro', { description: message })
     } finally {
       setIsLoading(false)
     }
