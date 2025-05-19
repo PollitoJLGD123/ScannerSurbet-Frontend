@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { User, Settings, LogOut, ChevronDown } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -18,37 +17,45 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { toast } from "sonner"
+import { useUser } from "@/lib/userContext"
 
 export function DashboardHeader() {
-  const router = useRouter()
   const [isLoggingOut, setIsLoggingOut] = useState(false)
+  const { user, logout } = useUser()
 
-  // datos prueba
-  const user = {
-    name: "Juan Pérez",
-    email: "juan.perez@ejemplo.com",
-    initials: "JP",
+  // obtener Iniciales de nombre
+  const getInitials = () => {
+    if (!user) return '';
+    
+    const firstInitial = user.nombres ? user.nombres.charAt(0) : '';
+    const lastInitial = user.apellidos ? user.apellidos.charAt(0) : '';
+    
+    return `${firstInitial}${lastInitial}`;
+  }
+
+  // obetener nombre completo
+  const getFullName = () => {
+    if (!user) return '';
+    
+    const nombres = user.nombres || '';
+    const apellidos = user.apellidos || '';
+    
+    return `${nombres} ${apellidos}`.trim(); 
   }
 
   const handleLogout = async () => {
     setIsLoggingOut(true)
 
     try {
-      // logout simulate
-      await new Promise((resolve) => setTimeout(resolve, 500))
-
+      await logout()
       toast("Sesión cerrada", {
         description: "Ha cerrado sesión correctamente",
       });
-
-      // redireccion login
-      router.push("/login")
     } catch (error) {
       console.error("Error al cerrar sesión:", error)
       toast.error("Error", {
         description: "Ocurrió un problema inesperado",
       });
-    } finally {
       setIsLoggingOut(false)
     }
   }
@@ -64,22 +71,23 @@ export function DashboardHeader() {
       <div className="ml-auto flex items-center gap-4">
         <ModeToggle />
 
+        {user && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-8 flex items-center gap-2 rounded-full">
               <Avatar className="h-8 w-8">
-                <AvatarImage src="/placeholder.svg" alt={user.name} />
-                <AvatarFallback>{user.initials}</AvatarFallback>
+                <AvatarImage src="/placeholder.svg" alt={getFullName()} />
+                <AvatarFallback>{getInitials()}</AvatarFallback>
               </Avatar>
-              <span className="hidden md:inline-flex">{user.name}</span>
+              <span className="hidden md:inline-flex">{getFullName()}</span>
               <ChevronDown className="h-4 w-4 text-muted-foreground" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="end" forceMount>
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">{user.name}</p>
-                <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+                <p className="text-sm font-medium leading-none">{getFullName()}</p>
+                <p className="text-xs leading-none text-muted-foreground">{user.correo}</p>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
@@ -100,6 +108,7 @@ export function DashboardHeader() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        )}
       </div>
     </header>
   )
