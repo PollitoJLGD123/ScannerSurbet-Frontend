@@ -77,7 +77,8 @@ export default function LoginPage() {
                     <FormControl>
                       <Input placeholder="correo@ejemplo.com" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    {/* Mensaje de error con tamaño de fuente más pequeño */}
+                    <FormMessage className="text-xs" />
                   </FormItem>
                 )}
               />
@@ -106,7 +107,8 @@ export default function LoginPage() {
                         </Button>
                       </div>
                     </FormControl>
-                    <FormMessage />
+                    {/* Mensaje de error con tamaño de fuente más pequeño */}
+                    <FormMessage className="text-xs" />
                   </FormItem>
                 )}
               />
@@ -118,7 +120,7 @@ export default function LoginPage() {
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
           <div className="text-center text-sm">
-            ¿No tiene una cuenta?{" "}
+            ¿No tiene una cuenta?{' '}
             <Link href="/register" className="underline text-primary hover:text-primary/90">
               Regístrese aquí
             </Link>
