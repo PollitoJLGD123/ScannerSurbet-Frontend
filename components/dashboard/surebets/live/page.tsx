@@ -4,13 +4,14 @@ import { useState, useEffect } from "react"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import BettingOpportunityCard from "@/components/scrap/card-oportunity"
 import WebSocketStatus from "@/components/scrap/socket-status"
-import { ArrowUpDown } from 'lucide-react'
+import { ArrowUpDown } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Calculator } from "@/components/scrap/calculator"
-import { Surebet, MessageSocket } from "@/types/data.type"
+import type { Surebet, MessageSocket } from "@/types/data.type"
+import { useSocketStore } from "@/app/socket/useSocketStore"
 
-export default function Home() {
+export default function Live() {
     const [bettingData, setBettingData] = useState<Surebet[]>([])
     const [connectionStatus, setConnectionStatus] = useState("connecting")
     const [error, setError] = useState("")
@@ -19,10 +20,10 @@ export default function Home() {
     const [isCalculated, setIsCalculated] = useState(false)
     const [isRemove, setIsRemove] = useState(false)
     const [dataSelect, setDataSelect] = useState<Surebet | null>(null)
+    const socket = useSocketStore((state) => state.socket)
 
     useEffect(() => {
-        // Conectar al WebSocket
-        const socket = new WebSocket("ws://localhost:4002")
+        if (!socket) return
 
         socket.onopen = () => {
             console.log("✅ Conectado al servidor WebSocket")
@@ -61,7 +62,9 @@ export default function Home() {
                         const arrayProp = Object.keys(data).find((key) => Array.isArray(data[key]))
                         if (arrayProp) {
                             // Filtrar elementos nulos o indefinidos
-                            const validData = (data[arrayProp] as unknown[]).filter((item) => item && typeof item === "object") as Surebet[]
+                            const validData = (data[arrayProp] as unknown[]).filter(
+                                (item) => item && typeof item === "object",
+                            ) as Surebet[]
                             setBettingData(validData)
                         } else {
                             // Si es un solo objeto de datos, verificar que sea válido antes de agregarlo
@@ -92,7 +95,7 @@ export default function Home() {
         return () => {
             socket.close()
         }
-    }, [])
+    }, [socket])
 
     // Obtener deportes únicos para las pestañas con validación
     const uniqueSports = Array.from(
@@ -148,23 +151,27 @@ export default function Home() {
     })
 
     return (
-        <main className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white p-2 md:p-4">
-            <div className="max-w-full mx-auto">
-                <header className="mb-3">
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 mb-3">
-                        <div>
-                            <h1 className="text-2xl font-bold">SurbetsPro</h1>
-                            <p className="text-gray-400 text-sm">Oportunidades de arbitraje deportivo en tiempo real</p>
+        <main className="min-h-screen bg-background text-foreground">
+            <div className="max-w-full mx-auto p-4 space-y-6">
+                <header className="space-y-4">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div className="space-y-1">
+                            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                                SurbetsPro
+                            </h1>
+                            <p className="text-muted-foreground text-sm">Oportunidades de arbitraje deportivo en tiempo real</p>
                         </div>
                         <WebSocketStatus status={connectionStatus} error={error} />
                     </div>
 
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="w-full sm:w-auto">
-                            <TabsList className="bg-gray-800 h-8">
-                                <TabsTrigger value="all" className="text-xs h-6">Todos</TabsTrigger>
+                            <TabsList className="h-9 bg-muted/50 backdrop-blur-sm">
+                                <TabsTrigger value="all" className="text-xs h-7">
+                                    Todos
+                                </TabsTrigger>
                                 {uniqueSports.map((sport) => (
-                                    <TabsTrigger key={sport} value={sport} className="text-xs h-6">
+                                    <TabsTrigger key={sport} value={sport} className="text-xs h-7">
                                         {sport}
                                     </TabsTrigger>
                                 ))}
@@ -174,7 +181,7 @@ export default function Home() {
                         <div className="flex items-center gap-2">
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <Button variant="outline" size="sm" className="flex items-center gap-1 h-7 text-xs">
+                                    <Button variant="outline" size="sm" className="flex items-center gap-1 h-8 text-xs">
                                         <ArrowUpDown className="h-3 w-3" />
                                         <span>Ordenar</span>
                                     </Button>
@@ -188,35 +195,34 @@ export default function Home() {
                     </div>
                 </header>
 
-                <div className="flex gap-3 w-full justify-center">
-                    <div className="grid grid-cols-1 gap-2 w-full md:w-[800px] ">
+                <div className="flex gap-6 w-full justify-center">
+                    <div className="grid grid-cols-1 gap-4 w-full md:w-[800px]">
                         {sortedData.length > 0 ? (
-                            sortedData.map((item, index) => (
-                                item ?
+                            sortedData.map((item, index) =>
+                                item ? (
                                     <BettingOpportunityCard
                                         key={index}
                                         data={item}
                                         setIsCalculated={setIsCalculated}
                                         setIsRemove={setIsRemove}
                                         setDataSelect={setDataSelect}
-                                    /> : null
-                            ))
+                                    />
+                                ) : null,
+                            )
                         ) : connectionStatus === "connected" ? (
-                            <div className="col-span-full text-center py-6">
-                                <p className="text-gray-400">No hay datos disponibles en este momento</p>
+                            <div className="col-span-full text-center py-12 rounded-lg border border-border/30 bg-card/10 backdrop-blur-sm">
+                                <p className="text-muted-foreground">No hay datos disponibles en este momento</p>
                             </div>
                         ) : (
-                            <div className="col-span-full text-center py-6">
-                                <p className="text-gray-400">Conectando al servidor...</p>
+                            <div className="col-span-full text-center py-12 rounded-lg border border-border/30 bg-card/10 backdrop-blur-sm">
+                                <p className="text-muted-foreground">Conectando al servidor...</p>
                             </div>
                         )}
                     </div>
                     <div className="flex-shrink-0">
                         {isCalculated && dataSelect && <Calculator data={dataSelect} setIsCalculated={setIsCalculated} />}
                     </div>
-                    <div className="flex-shrink-0">
-                        {isRemove}
-                    </div>
+                    <div className="flex-shrink-0">{isRemove}</div>
                 </div>
             </div>
         </main>
