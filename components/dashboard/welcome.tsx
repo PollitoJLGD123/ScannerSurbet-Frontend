@@ -2,9 +2,14 @@
 
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { useUser } from "@/lib/userContext"
 
 export function DashboardWelcome() {
   const [greeting, setGreeting] = useState("")
+  const { user } = useUser()
+  const firstName = user?.nombres 
+    ? user.nombres.split(' ')[0] 
+    : (user?.correo ? user.correo.split('@')[0] : '')
 
   useEffect(() => {
     const hour = new Date().getHours()
@@ -21,7 +26,7 @@ export function DashboardWelcome() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl">{greeting}, Juan</CardTitle>
+        <CardTitle className="text-2xl">{greeting}, {firstName}</CardTitle>
         <CardDescription>Bienvenido a su panel de control de Arbisure</CardDescription>
       </CardHeader>
       <CardContent>
