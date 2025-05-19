@@ -162,11 +162,12 @@ export default function RegistroPage() {
       apellidos: "",
       correo: "",
       password: "",
+      confirmPassword: "", // This was missing in your defaultValues
       pais: "",
       codPais: "",
       celular: "",
     },
-  })
+  });
 
   // actualizacion de código de pais
   const watchPais = form.watch("pais")
@@ -363,7 +364,12 @@ export default function RegistroPage() {
                     <FormItem>
                       <FormLabel>Código de País</FormLabel>
                       <FormControl>
-                        <Input {...field} disabled placeholder="Código" />
+                        <Input 
+                          {...field} 
+                          value={field.value || ""} 
+                          disabled 
+                          placeholder="Código" 
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
