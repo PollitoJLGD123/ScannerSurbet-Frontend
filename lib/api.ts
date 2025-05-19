@@ -21,7 +21,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      const isLogout = error.config.url?.includes('auth/logout');
+      const isLogout = error.config.url?.includes('api/auth/logout');
 
       if (!isLogout && typeof window !== 'undefined') {
         removeAuthCookie();

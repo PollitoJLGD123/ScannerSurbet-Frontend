@@ -44,6 +44,7 @@ export async function getCurrentUser(): Promise<UserProfile> {
     throw new Error('No hay sesión activa');
   }
   const res = await api.get<AuthResponse<UserProfile>>('api/user/me');
+  
   return res.data.data;
 }
 

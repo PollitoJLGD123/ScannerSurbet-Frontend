@@ -21,26 +21,35 @@ import { useUser } from "@/lib/userContext"
 
 export function DashboardHeader() {
   const [isLoggingOut, setIsLoggingOut] = useState(false)
-  const { user, logout } = useUser()
-
-  // obtener Iniciales de nombre
+  const { user, logout } = useUser()  // obtener Iniciales de nombre
   const getInitials = () => {
     if (!user) return '';
     
-    const firstInitial = user.nombres ? user.nombres.charAt(0) : '';
-    const lastInitial = user.apellidos ? user.apellidos.charAt(0) : '';
+    if (user.nombres && user.apellidos) {
+      return `${user.nombres.charAt(0)}${user.apellidos.charAt(0)}`.toUpperCase();
+    }
     
-    return `${firstInitial}${lastInitial}`;
+    // Usar solo el campo correo
+    const correoUsuario = user.correo || '';
+    const firstLetter = correoUsuario ? correoUsuario.charAt(0).toUpperCase() : '';
+    const secondLetter = correoUsuario.indexOf('@') > 1 ? correoUsuario.charAt(1).toUpperCase() : '';
+    
+    return `${firstLetter}${secondLetter}`;
   }
 
-  // obetener nombre completo
+  // obtener nombre completo
   const getFullName = () => {
     if (!user) return '';
     
-    const nombres = user.nombres || '';
-    const apellidos = user.apellidos || '';
+    if (user.nombres && user.apellidos) {
+      return `${user.nombres} ${user.apellidos}`;
+    }
     
-    return `${nombres} ${apellidos}`.trim(); 
+    // usar solo el campo correo
+    const correoUsuario = user.correo || '';
+    const name = correoUsuario.split('@')[0] || '';
+    
+    return name; 
   }
 
   const handleLogout = async () => {

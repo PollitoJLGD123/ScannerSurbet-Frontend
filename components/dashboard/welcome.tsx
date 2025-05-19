@@ -7,7 +7,9 @@ import { useUser } from "@/lib/userContext"
 export function DashboardWelcome() {
   const [greeting, setGreeting] = useState("")
   const { user } = useUser()
-  const firstName = user?.nombres ? user.nombres.split(' ')[0] : ''
+  const firstName = user?.nombres 
+    ? user.nombres.split(' ')[0] 
+    : (user?.correo ? user.correo.split('@')[0] : '')
 
   useEffect(() => {
     const hour = new Date().getHours()
