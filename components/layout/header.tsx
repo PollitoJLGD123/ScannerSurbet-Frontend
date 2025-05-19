@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "../mode-toggle"
 import { Menu, X } from "lucide-react"
+import Image from "next/image"
 
 const navItems = [
   { name: "Inicio", href: "#home" },
@@ -50,9 +51,13 @@ export default function Header() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center">
-            <span className="text-2xl font-bold bg-gradient-to-r from-green-700 to-green-900 bg-clip-text text-transparent">
-              ARBISURE
-            </span>
+            <Image 
+              src="/arbisure-logo.png"
+              alt="Arbisure Logo"
+              width={140} 
+              height={25} 
+              className="h-auto" 
+            />
           </Link>
         </div>
 

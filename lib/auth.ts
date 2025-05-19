@@ -4,6 +4,7 @@ import { setAuthCookie, removeAuthCookie, hasAuthCookie } from './cookies';
 
 type LoginData = { correo: string; password: string };
 export type RegisterData = { nombres: string; apellidos: string; correo: string; password: string; pais: string; codPais: string; celular: string };
+export type ChangePasswordData = { currentPassword: string; newPassword: string };
 
 interface AuthResponse<T> {
   success: boolean;
@@ -26,6 +27,37 @@ export async function register(data: RegisterData): Promise<UserProfile> {
   const res = await api.post<AuthResponse<AuthPayload>>('api/auth/register', data);
   setAuthCookie(res.data.data.token);
   return res.data.data.user;
+}
+
+export async function changePassword(data: ChangePasswordData): Promise<void> {
+  try {
+    await api.post<AuthResponse<{ message: string }>>('api/auth/change-password', data);
+    return;
+  } catch (error: unknown) {
+    if (typeof error === 'object' && error !== null) {
+      // Verificar error axios
+      const axiosError = error as { 
+        isAxiosError?: boolean;
+        response?: { 
+          data?: { 
+            message?: string 
+          } 
+        } 
+      };
+      
+      if (axiosError.isAxiosError && 
+          axiosError.response?.data?.message) {
+        throw new Error(axiosError.response.data.message);
+      }
+    }
+
+    //propagar error
+    if (error instanceof Error) {
+      throw error;
+    }
+    
+    throw new Error("Error desconocido al cambiar la contraseña");
+  }
 }
 
 export async function logout(): Promise<void> {

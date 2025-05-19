@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 
 export default function Footer() {
   return (
@@ -6,9 +7,13 @@ export default function Footer() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
         <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">
           <Link href="/" className="flex items-center">
-            <span className="text-2xl font-bold bg-gradient-to-r from-green-700 to-green-900 bg-clip-text text-transparent">
-              ARBISURE
-            </span>
+            <Image 
+              src="/arbisure-logo.png"
+              alt="Arbisure Logo"
+              width={180} 
+              height={40} 
+              className="h-auto" 
+            />
           </Link>
           <p className="text-sm text-muted-foreground mt-2">
             © {new Date().getFullYear()} Arbisure. Todos los derechos reservados.

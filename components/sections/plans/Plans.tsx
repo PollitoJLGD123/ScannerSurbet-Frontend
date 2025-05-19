@@ -5,8 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 const plans30days = [
   {
-    name: "En vivo",
-    price: "$89.90",
+    name: "Live",
+    price: "$60.00",
     description: "Perfecto para eventos en vivo",
     features: [
       "Eventos en vivo",
@@ -18,8 +18,8 @@ const plans30days = [
     popular: false,
   },
   {
-    name: "Completo",
-    price: "$99.90",
+    name: "Full",
+    price: "$70.00",
     description: "Acceso completo a todas las funciones",
     features: [
       "Eventos en vivo y prematch",
@@ -32,7 +32,7 @@ const plans30days = [
   },
   {
     name: "Prematch",
-    price: "$59.90",
+    price: "$30.00",
     description: "Solo para eventos prematch",
     features: [
       "Eventos prematch",
@@ -48,8 +48,8 @@ const plans30days = [
 // Nuevos planes de 15 días
 const plans15days = [
   {
-    name: "En vivo",
-    price: "$79.90",
+    name: "Live",
+    price: "$50.00",
     description: "Eventos en vivo",
     features: [
       "Calculadora de surebets",
@@ -60,8 +60,8 @@ const plans15days = [
     popular: false,
   },
   {
-    name: "Completo",
-    price: "$89.90",
+    name: "Full",
+    price: "$60.00",
     description: "Eventos en vivo y prematch",
     features: [
       "Calculadora de surebets",
@@ -73,7 +73,7 @@ const plans15days = [
   },
   {
     name: "Prematch",
-    price: "$49.90",
+    price: "$20.00",
     description: "Eventos prematch",
     features: [
       "Calculadora de surebets",
@@ -116,7 +116,7 @@ export default function Plans() {
                 <Card
                   key={index}
                   className={`flex flex-col relative ${
-                    plan.popular ? "border-primary shadow-lg" : ""
+                    plan.popular ? "border-secondary shadow-lg" : ""
                   }`}
                 >
                   {plan.popular && (
@@ -150,7 +150,7 @@ export default function Plans() {
                     <Button
                       className={`w-full ${
                         plan.popular
-                          ? "bg-gradient-to-r from-green-700 to-green-900 hover:from-green-900 hover:to-green-950 text-white"
+                          ? "bg-gradient-to-r from-green-800 to-green-900 hover:from-green-900 hover:to-green-950 text-white"
                           : ""
                       }`}
                     >
@@ -169,7 +169,7 @@ export default function Plans() {
                 <Card
                   key={index}
                   className={`flex flex-col relative ${
-                    plan.popular ? "border-primary shadow-lg" : ""
+                    plan.popular ? "border-secondary shadow-lg" : ""
                   }`}
                 >
                   {plan.popular && (
@@ -203,7 +203,7 @@ export default function Plans() {
                     <Button
                       className={`w-full ${
                         plan.popular
-                          ? "bg-gradient-to-r from-green-700 to-green-900 hover:from-green-900 hover:to-green-950 text-white"
+                          ? "bg-gradient-to-br from-green-800 to-green-900 hover:from-green-900 hover:to-green-950 text-white"
                           : ""
                       }`}
                     >

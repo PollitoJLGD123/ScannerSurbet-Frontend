@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Settings, LogOut, ChevronDown } from "lucide-react"
-
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
 import {
@@ -73,11 +73,15 @@ export function DashboardHeader() {
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-6">
-      <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
-        <span className="text-xl font-bold bg-gradient-to-r from-green-700 to-green-900 bg-clip-text text-transparent">
-          ARBISURE
-        </span>
-      </Link>
+      <Link href="/" className="flex items-center">
+            <Image 
+              src="/arbisure-logo.png"
+              alt="Arbisure Logo"
+              width={140} 
+              height={25} 
+              className="h-auto" 
+            />
+          </Link>
 
       <div className="ml-auto flex items-center gap-4">
         <ModeToggle />

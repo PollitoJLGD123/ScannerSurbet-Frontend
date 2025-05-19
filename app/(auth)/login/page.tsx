@@ -14,6 +14,8 @@ import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { login } from '@/lib/auth'
+import Image from "next/image"
+
 
 const loginSchema = z.object({
   correo: z.string().email("Ingrese un correo electrónico válido"),
@@ -61,6 +63,17 @@ export default function LoginPage() {
       </div>
 
       <Card className="w-full max-w-md">
+
+        <div className="flex justify-center mt-4">
+          <Image 
+            src="/arbisure-logo.png" 
+            alt="Arbisure Logo" 
+            width={180} 
+            height={45}
+            priority
+          />
+        </div>
+
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">Iniciar Sesión</CardTitle>
           <CardDescription className="text-center">Ingrese sus credenciales para acceder a su cuenta</CardDescription>

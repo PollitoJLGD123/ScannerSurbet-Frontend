@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner"
 import { register as registerUser } from '@/lib/auth'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-
+import Image from "next/image"
 // datos de países
 const paisesData = {
   paises: [
@@ -228,14 +228,27 @@ export default function RegistroPage() {
 
       <Card className="w-full max-w-2xl">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">Registro</CardTitle>
-          <CardDescription className="text-center">
-            Complete el formulario para crear su cuenta en Arbisure
-          </CardDescription>
+          <div className="flex items-center justify-between">
+            <div className="space-y-1">
+              <CardTitle className="text-2xl font-bold">Registro</CardTitle>
+              <CardDescription>
+                Complete el formulario para crear su cuenta en Arbisure
+              </CardDescription>
+            </div>
+            <div className="flex-shrink-0">
+              <Image 
+                src="/arbisure-logo.png" 
+                alt="Arbisure Logo" 
+                width={150} 
+                height={40}
+                priority
+              />
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-2">
                 <FormField
                   control={form.control}
@@ -397,7 +410,13 @@ export default function RegistroPage() {
                     <FormItem className="relative mb-6">
                       <FormLabel>Celular</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Número de celular" type="tel" />
+                        <Input {...field} placeholder="Número de celular" type="tel" 
+                          onChange={(e) => {
+                            const onlyNums = e.target.value.replace(/[^0-9]/g, '');
+                            field.onChange(onlyNums);
+                          }}
+                          value={field.value?.replace(/[^0-9]/g, '') || ''}
+                        />
                       </FormControl>
                       <ErrorMessage>{form.formState.errors.celular?.message}</ErrorMessage>
                     </FormItem>
