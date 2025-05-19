@@ -29,7 +29,7 @@ export function Calculator({ data, setIsCalculated }: DataCalculator) {
 
     // Inicializar stakes y checked al cargar el componente
     useEffect(() => {
-        const initialStakes: Record<string, number> = {}
+        const initialStakes: Record<number, number> = {}
         const initialChecked : Record<string, boolean> = {}
         const initialGanancias: Record<number, number> = {}
         let number_surbet = 0
@@ -273,9 +273,9 @@ export function Calculator({ data, setIsCalculated }: DataCalculator) {
                             </TableHeader>
                             <TableBody>
                                 {sections.map((section, index) => {
-                                    const stake = Number.parseFloat(stakes[index] || "0")
-                                    const odds = Number.parseFloat(section.odds || "0")
-                                    const profit = !isNaN(stake) && !isNaN(odds) ? (stake * odds - totalStake).toFixed(2) : "0.00"
+                                    //const stake = Number.parseFloat(String(stakes[index] || 0))
+                                    //const odds = Number.parseFloat(section.odds || "0")
+                                    //const profit = !isNaN(stake) && !isNaN(odds) ? (stake * odds - totalStake).toFixed(2) : "0.00"
 
                                     return (
                                         <TableRow key={index}>

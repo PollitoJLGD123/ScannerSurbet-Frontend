@@ -6,7 +6,7 @@ import { ArrowDown, ArrowUp, Clock, AlertCircle, Trash, Calculator } from "lucid
 import { Separator } from "@/components/ui/separator"
 import { DataFunctionCard } from "@/types/data.type"
 
-export default function BettingOpportunityCard({ data,setDataSelect,setIsCalculated,setIsRemove}: DataFunctionCard) {
+export default function BettingOpportunityCard({ data, setDataSelect, setIsCalculated, setIsRemove}: DataFunctionCard) {
     // Check if data exists
     if (!data) {
         return (
@@ -96,7 +96,7 @@ export default function BettingOpportunityCard({ data,setDataSelect,setIsCalcula
                                         <Badge variant="secondary" className="text-xs py-0 h-5 w-24">
                                             {section.book_name || "Book"}
                                         </Badge>
-                                        <span className="text-gray-400">{section.score || "N/A"}</span>
+                                        <span className="text-gray-400">{section.score ? section.score : section.date_game || "N/A"}</span>
                                     </div>
 
                                     <div>
