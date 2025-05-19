@@ -16,7 +16,7 @@ export default function Hero() {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2">
-              <Button size="lg" className="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white shadow-md">
+              <Button size="lg" className="bg-gradient-to-r from-green-700 to-green-900 hover:from-green-900 hover:to-green-950 text-white shadow-md">
                 Regístrate Ahora
               </Button>
               <Button size="lg" variant="outline" className="border-2 shadow-sm">Saber más</Button>
@@ -25,7 +25,7 @@ export default function Hero() {
           <div className="justify-self-center flex">
             <div className="relative w-full max-w-[500px] aspect-video rounded-xl overflow-hidden">
               <Image
-                src="/earn_money_2.jpg"
+                src="/earn_money.PNG"
                 alt="Arbisure Dashboard"
                 width={800}
                 height={500}
@@ -38,7 +38,7 @@ export default function Hero() {
         <div className="mt-20 text-center">
           <h2 className="text-2xl font-bold mb-4">Genera ganancias con surebets en tiempo real</h2>
           <div className="flex justify-center">
-            <div className="w-24 h-1 bg-gradient-to-r from-teal-500 to-blue-600 rounded-full"></div>
+            <div className="w-24 h-1 bg-gradient-to-r from-green-700 to-green-900 rounded-full"></div>
           </div>
         </div>
       </div>

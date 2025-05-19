@@ -1,8 +1,8 @@
 import type { Config } from "tailwindcss"
-import tailwindcssAnimate from "tailwindcss-animate";
+import tailwindcssAnimate from "tailwindcss-animate"
 
 const config = {
-  darkMode: 'class',
+  darkMode: "class",
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -54,11 +54,39 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Arbisure custom colors
+        arbisure: {
+          green: "#004d28",
+          yellow: "#ffc107",
+          lightYellow: "#fff8e1",
+          peach: "#ffab91",
+          lightPeach: "#ffd8cc",
+        },
+        // Chart colors
+        chart: {
+          1: "oklch(var(--chart-1))",
+          2: "oklch(var(--chart-2))",
+          3: "oklch(var(--chart-3))",
+          4: "oklch(var(--chart-4))",
+          5: "oklch(var(--chart-5))",
+        },
+        // Sidebar colors
+        sidebar: {
+          DEFAULT: "oklch(var(--sidebar))",
+          foreground: "oklch(var(--sidebar-foreground))",
+          primary: "oklch(var(--sidebar-primary))",
+          "primary-foreground": "oklch(var(--sidebar-primary-foreground))",
+          accent: "oklch(var(--sidebar-accent))",
+          "accent-foreground": "oklch(var(--sidebar-accent-foreground))",
+          border: "oklch(var(--sidebar-border))",
+          ring: "oklch(var(--sidebar-ring))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        xl: "var(--radius-xl)",
       },
       keyframes: {
         "accordion-down": {

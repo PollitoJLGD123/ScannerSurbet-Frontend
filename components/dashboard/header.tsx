@@ -56,7 +56,7 @@ export function DashboardHeader() {
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-6">
       <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
-        <span className="text-xl font-bold bg-gradient-to-r from-teal-500 to-blue-600 bg-clip-text text-transparent">
+        <span className="text-xl font-bold bg-gradient-to-r from-green-700 to-green-900 bg-clip-text text-transparent">
           ARBISURE
         </span>
       </Link>

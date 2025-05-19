@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
         <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">
           <Link href="/" className="flex items-center">
-            <span className="text-2xl font-bold bg-gradient-to-r from-teal-500 to-blue-600 bg-clip-text text-transparent">
+            <span className="text-2xl font-bold bg-gradient-to-r from-green-700 to-green-900 bg-clip-text text-transparent">
               ARBISURE
             </span>
           </Link>

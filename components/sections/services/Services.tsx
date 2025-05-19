@@ -41,7 +41,7 @@ export default function Services() {
 							Servicios
 						</h2>
 						<div className="flex justify-center">
-							<div className="w-16 h-1 bg-gradient-to-r from-teal-500 to-blue-600 rounded-full"></div>
+							<div className="w-16 h-1 bg-gradient-to-r from-green-700 to-green-900 rounded-full"></div>
 						</div>
 						<p className="max-w-[900px] mx-auto text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
 							Tenemos una amplia gama de servicios para que puedas invertir y generar dinero de forma segura y confiable.

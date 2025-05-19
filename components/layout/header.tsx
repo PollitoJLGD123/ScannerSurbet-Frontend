@@ -50,7 +50,7 @@ export default function Header() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center">
-            <span className="text-2xl font-bold bg-gradient-to-r from-teal-500 to-blue-600 bg-clip-text text-transparent">
+            <span className="text-2xl font-bold bg-gradient-to-r from-green-700 to-green-900 bg-clip-text text-transparent">
               ARBISURE
             </span>
           </Link>
@@ -78,7 +78,7 @@ export default function Header() {
           </Button>
           <Button
             size="sm"
-            className="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700"
+            className="bg-gradient-to-r from-green-700 to-green-900 hover:from-green-900 hover:to-green-950 text-white"
           >
             <Link href="/register">Registrarse</Link>
             
@@ -125,7 +125,7 @@ export default function Header() {
               </Button>
               <Button
                 size="lg"
-                className="w-full bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 shadow-md"
+                className="w-full bg-gradient-to-r from-green-700 to-green-900 hover:from-green-900 hover:to-green-950 text-white shadow-md"
               >
                 <Link href="/register">Registrarse</Link>
               </Button>

@@ -31,7 +31,7 @@ export default function Faq() {
           <div className="space-y-3">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Preguntas Frecuentes</h2>
             <div className="flex justify-center">
-              <div className="w-16 h-1 bg-gradient-to-r from-teal-500 to-blue-600 rounded-full"></div>
+              <div className="w-16 h-1 bg-gradient-to-r from-green-700 to-green-900 rounded-full"></div>
             </div>
           </div>
         </div>

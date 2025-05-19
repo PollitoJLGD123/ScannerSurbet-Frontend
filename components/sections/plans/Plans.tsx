@@ -95,7 +95,7 @@ export default function Plans() {
               Planes
             </h2>
             <div className="flex justify-center">
-              <div className="w-16 h-1 bg-gradient-to-r from-teal-500 to-blue-600 rounded-full"></div>
+              <div className="w-16 h-1 bg-gradient-to-r from-green-700 to-green-900 rounded-full"></div>
             </div>
             <p className="max-w-[900px] mx-auto text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
               Tenemos varios planes para adaptarnos a tus necesidades.
@@ -150,7 +150,7 @@ export default function Plans() {
                     <Button
                       className={`w-full ${
                         plan.popular
-                          ? "bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700"
+                          ? "bg-gradient-to-r from-green-700 to-green-900 hover:from-green-900 hover:to-green-950 text-white"
                           : ""
                       }`}
                     >
@@ -203,7 +203,7 @@ export default function Plans() {
                     <Button
                       className={`w-full ${
                         plan.popular
-                          ? "bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700"
+                          ? "bg-gradient-to-r from-green-700 to-green-900 hover:from-green-900 hover:to-green-950 text-white"
                           : ""
                       }`}
                     >

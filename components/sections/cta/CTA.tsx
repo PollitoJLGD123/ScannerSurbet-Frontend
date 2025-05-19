@@ -12,7 +12,7 @@ export default function CTA() {
             </p>
           </div>
           <div className="w-full max-w-sm space-y-2">
-            <Button size="lg" className="w-full bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 shadow-lg">
+            <Button size="lg" className="w-full bg-gradient-to-r from-green-700 to-green-900 hover:from-green-900 hover:to-green-950 text-white shadow-lg">
               Solicita tu demo
             </Button>
           </div>
