@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, ReactNode } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -9,7 +9,7 @@ import { z } from "zod"
 import { Eye, EyeOff, ArrowLeft } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "sonner"
@@ -142,12 +142,26 @@ const registroSchema = z
       return data.celular.length === paisSeleccionado.cantDigitos
     },
     {
-      message: "El número de teléfono no tiene la cantidad correcta de dígitos para el país seleccionado",
+      message: "Cantidad de dígitos incorrecta",
       path: ["celular"],
     },
   )
 
 type RegistroFormValues = z.infer<typeof registroSchema>
+
+// Componente personalizado para mensajes de error
+interface ErrorMessageProps {
+  children: ReactNode;
+}
+
+const ErrorMessage = ({ children }: ErrorMessageProps) => {
+  if (!children) return null;
+  return (
+    <div className="text-xs text-destructive mt-1.5 sm:absolute sm:-bottom-6 sm:left-0 sm:mt-0">
+      {children}
+    </div>
+  );
+};
 
 export default function RegistroPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -162,7 +176,7 @@ export default function RegistroPage() {
       apellidos: "",
       correo: "",
       password: "",
-      confirmPassword: "", // This was missing in your defaultValues
+      confirmPassword: "",
       pais: "",
       codPais: "",
       celular: "",
@@ -221,18 +235,18 @@ export default function RegistroPage() {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-2">
                 <FormField
                   control={form.control}
                   name="nombres"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="relative mb-6">
                       <FormLabel>Nombres</FormLabel>
                       <FormControl>
                         <Input placeholder="Ingrese sus nombres" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <ErrorMessage>{form.formState.errors.nombres?.message}</ErrorMessage>
                     </FormItem>
                   )}
                 />
@@ -240,12 +254,12 @@ export default function RegistroPage() {
                   control={form.control}
                   name="apellidos"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="relative mb-6">
                       <FormLabel>Apellidos</FormLabel>
                       <FormControl>
                         <Input placeholder="Ingrese sus apellidos" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <ErrorMessage>{form.formState.errors.apellidos?.message}</ErrorMessage>
                     </FormItem>
                   )}
                 />
@@ -255,22 +269,22 @@ export default function RegistroPage() {
                 control={form.control}
                 name="correo"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="relative mb-6 mt-0">
                     <FormLabel>Correo Electrónico</FormLabel>
                     <FormControl>
                       <Input placeholder="correo@ejemplo.com" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <ErrorMessage>{form.formState.errors.correo?.message}</ErrorMessage>
                   </FormItem>
                 )}
               />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
                 <FormField
                   control={form.control}
                   name="password"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="relative mb-6">
                       <FormLabel>Contraseña</FormLabel>
                       <FormControl>
                         <div className="relative">
@@ -293,7 +307,7 @@ export default function RegistroPage() {
                           </Button>
                         </div>
                       </FormControl>
-                      <FormMessage />
+                      <ErrorMessage>{form.formState.errors.password?.message}</ErrorMessage>
                     </FormItem>
                   )}
                 />
@@ -302,7 +316,7 @@ export default function RegistroPage() {
                   control={form.control}
                   name="confirmPassword"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="relative mb-6">
                       <FormLabel>Confirmar Contraseña</FormLabel>
                       <FormControl>
                         <div className="relative">
@@ -325,22 +339,22 @@ export default function RegistroPage() {
                           </Button>
                         </div>
                       </FormControl>
-                      <FormMessage />
+                      <ErrorMessage>{form.formState.errors.confirmPassword?.message}</ErrorMessage>
                     </FormItem>
                   )}
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
                 <FormField
                   control={form.control}
                   name="pais"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="relative mb-6">
                       <FormLabel>País</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} defaultValue={field.value} >
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="w-full">
                             <SelectValue placeholder="Seleccione un país" />
                           </SelectTrigger>
                         </FormControl>
@@ -352,7 +366,7 @@ export default function RegistroPage() {
                           ))}
                         </SelectContent>
                       </Select>
-                      <FormMessage />
+                      <ErrorMessage>{form.formState.errors.pais?.message}</ErrorMessage>
                     </FormItem>
                   )}
                 />
@@ -361,7 +375,7 @@ export default function RegistroPage() {
                   control={form.control}
                   name="codPais"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="relative mb-6">
                       <FormLabel>Código de País</FormLabel>
                       <FormControl>
                         <Input 
@@ -371,7 +385,7 @@ export default function RegistroPage() {
                           placeholder="Código" 
                         />
                       </FormControl>
-                      <FormMessage />
+                      <ErrorMessage>{form.formState.errors.codPais?.message}</ErrorMessage>
                     </FormItem>
                   )}
                 />
@@ -380,12 +394,12 @@ export default function RegistroPage() {
                   control={form.control}
                   name="celular"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="relative mb-6">
                       <FormLabel>Celular</FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="Número de celular" type="tel" />
                       </FormControl>
-                      <FormMessage />
+                      <ErrorMessage>{form.formState.errors.celular?.message}</ErrorMessage>
                     </FormItem>
                   )}
                 />
