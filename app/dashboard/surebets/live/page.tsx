@@ -13,8 +13,6 @@ import { useSocketStore } from "@/components/dashboard/socket/useSocketStore"
 
 export default function Live() {
     const [bettingData, setBettingData] = useState<Surebet[]>([])
-    //const [connectionStatus, setConnectionStatus] = useState("connecting")
-    //const [error, setError] = useState("")
     const [activeTab, setActiveTab] = useState("all")
     const [sortBy, setSortBy] = useState("percent")
     const [isCalculated, setIsCalculated] = useState(false)
@@ -134,7 +132,7 @@ export default function Live() {
 
     return (
         <main className="min-h-screen bg-background text-foreground">
-            <div className="max-w-full mx-auto p-4 space-y-6">
+            <div className="max-w-full mx-auto px-4 space-y-3">
                 <header className="space-y-4">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div className="space-y-1">
@@ -143,23 +141,6 @@ export default function Live() {
                             </h1>
                             <p className="text-muted-foreground text-sm">Oportunidades de arbitraje deportivo en tiempo real</p>
                         </div>
-                        { /*<WebSocketStatus status={connectionStatus} error={error} />*/ }
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                        <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="w-full sm:w-auto">
-                            <TabsList className="h-9 bg-muted/50 backdrop-blur-sm">
-                                <TabsTrigger value="all" className="text-xs h-7">
-                                    Todos
-                                </TabsTrigger>
-                                {uniqueSports.map((sport) => (
-                                    <TabsTrigger key={sport} value={sport} className="text-xs h-7">
-                                        {sport}
-                                    </TabsTrigger>
-                                ))}
-                            </TabsList>
-                        </Tabs>
-
                         <div className="flex items-center gap-2">
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
@@ -178,7 +159,7 @@ export default function Live() {
                 </header>
 
                 <div className="flex gap-6 w-full justify-center">
-                    <div className="grid grid-cols-1 gap-4 w-full md:w-[600px]">
+                    <div className="grid grid-cols-1 gap-2 w-full md:w-[600px]">
                         {sortedData.length > 0 ? (
                             sortedData.map((item, index) =>
                                 item ? (
