@@ -3,18 +3,18 @@
 import { useState, useEffect } from "react"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import BettingOpportunityCard from "@/components/scrap/card-oportunity"
-import WebSocketStatus from "@/components/scrap/socket-status"
+//import WebSocketStatus from "@/components/scrap/socket-status"
 import { ArrowUpDown } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Calculator } from "@/components/scrap/calculator"
 import type { Surebet, MessageSocket } from "@/types/data.type"
-import { useSocketStore } from "@/app/socket/useSocketStore"
+import { useSocketStore } from "@/components/dashboard/socket/useSocketStore"
 
 export default function Live() {
     const [bettingData, setBettingData] = useState<Surebet[]>([])
-    const [connectionStatus, setConnectionStatus] = useState("connecting")
-    const [error, setError] = useState("")
+    //const [connectionStatus, setConnectionStatus] = useState("connecting")
+    //const [error, setError] = useState("")
     const [activeTab, setActiveTab] = useState("all")
     const [sortBy, setSortBy] = useState("percent")
     const [isCalculated, setIsCalculated] = useState(false)
@@ -23,12 +23,9 @@ export default function Live() {
     const socket = useSocketStore((state) => state.socket)
 
     useEffect(() => {
-        if (!socket) return
-
-        socket.onopen = () => {
-            console.log("✅ Conectado al servidor WebSocket")
-            setConnectionStatus("connected")
-            setError("")
+        if (!socket){
+            console.log("Socket no establecido")
+            return
         }
 
         socket.onmessage = (event: MessageEvent) => {
@@ -47,7 +44,7 @@ export default function Live() {
                     return
                 }
 
-                if (message.type === "prematch_data") {
+                if (message.type === "live_data") {
                     const data = message.payload
 
                     // Si es un array, usarlo directamente
@@ -76,25 +73,10 @@ export default function Live() {
                 }
             } catch (err) {
                 console.error("Error al procesar los datos:", err)
-                setError("Error al procesar los datos del servidor")
+                //setError("Error al procesar los datos del servidor")
             }
         }
 
-        socket.onclose = () => {
-            console.log("❌ Desconectado del servidor WebSocket")
-            setConnectionStatus("disconnected")
-        }
-
-        socket.onerror = (err) => {
-            console.error("Error en la conexión WebSocket:", err)
-            setConnectionStatus("disconnected")
-            setError("Error en la conexión al servidor")
-        }
-
-        // Limpiar la conexión al desmontar
-        return () => {
-            socket.close()
-        }
     }, [socket])
 
     // Obtener deportes únicos para las pestañas con validación
@@ -161,7 +143,7 @@ export default function Live() {
                             </h1>
                             <p className="text-muted-foreground text-sm">Oportunidades de arbitraje deportivo en tiempo real</p>
                         </div>
-                        <WebSocketStatus status={connectionStatus} error={error} />
+                        { /*<WebSocketStatus status={connectionStatus} error={error} />*/ }
                     </div>
 
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -196,7 +178,7 @@ export default function Live() {
                 </header>
 
                 <div className="flex gap-6 w-full justify-center">
-                    <div className="grid grid-cols-1 gap-4 w-full md:w-[800px]">
+                    <div className="grid grid-cols-1 gap-4 w-full md:w-[600px]">
                         {sortedData.length > 0 ? (
                             sortedData.map((item, index) =>
                                 item ? (
@@ -209,13 +191,9 @@ export default function Live() {
                                     />
                                 ) : null,
                             )
-                        ) : connectionStatus === "connected" ? (
-                            <div className="col-span-full text-center py-12 rounded-lg border border-border/30 bg-card/10 backdrop-blur-sm">
-                                <p className="text-muted-foreground">No hay datos disponibles en este momento</p>
-                            </div>
                         ) : (
                             <div className="col-span-full text-center py-12 rounded-lg border border-border/30 bg-card/10 backdrop-blur-sm">
-                                <p className="text-muted-foreground">Conectando al servidor...</p>
+                                <p className="text-muted-foreground">No hay datos disponibles en este momento</p>
                             </div>
                         )}
                     </div>

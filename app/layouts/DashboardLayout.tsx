@@ -5,7 +5,7 @@ import PrivateRoute from '@/lib/private-route'
 import type { Metadata } from "next"
 import { DashboardSidebar } from "@/components/dashboard/sidebar"
 import { DashboardHeader } from "@/components/dashboard/header"
-import { initWebSocket } from "@/app/socket/socketInit"
+import { initWebSocket } from "@/components/dashboard/socket/socketInit"
 import { useEffect } from "react"
 
 export const metadata: Metadata = {

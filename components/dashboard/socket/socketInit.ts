@@ -3,9 +3,7 @@ import { useSocketStore } from './useSocketStore'
 
 export function initWebSocket(url: string) {
     const {
-        setSocket,
-        setConnectionStatus,
-        setError,
+        setSocket
     } = useSocketStore.getState()
 
     const socket = new WebSocket(url)
@@ -13,19 +11,14 @@ export function initWebSocket(url: string) {
 
     socket.onopen = () => {
         console.log('✅ WebSocket conectado')
-        setConnectionStatus('connected')
-        setError('')
     }
 
     socket.onerror = (err) => {
         console.error('Error WebSocket:', err)
-        setConnectionStatus('disconnected')
-        setError('Error al conectar al servidor')
     }
 
     socket.onclose = () => {
         console.log('❌ WebSocket desconectado')
-        setConnectionStatus('disconnected')
     }
 
     return socket
