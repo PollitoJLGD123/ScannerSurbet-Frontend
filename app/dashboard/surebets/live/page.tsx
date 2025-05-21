@@ -45,6 +45,8 @@ export default function Live() {
                 if (message.type === "live_data") {
                     const data = message.payload
 
+                    console.log("Datos recibidos:", data)
+
                     // Si es un array, usarlo directamente
                     if (Array.isArray(data)) {
                         // Filtrar elementos nulos o indefinidos
