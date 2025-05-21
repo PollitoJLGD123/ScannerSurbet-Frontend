@@ -1,9 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import BettingOpportunityCard from "@/components/scrap/card-oportunity"
-//import WebSocketStatus from "@/components/scrap/socket-status"
 import { ArrowUpDown } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
@@ -13,7 +11,6 @@ import { useSocketStore } from "@/components/dashboard/socket/useSocketStore"
 
 export default function Live() {
     const [bettingData, setBettingData] = useState<Surebet[]>([])
-    const [activeTab, setActiveTab] = useState("all")
     const [sortBy, setSortBy] = useState("percent")
     const [isCalculated, setIsCalculated] = useState(false)
     const [isRemove, setIsRemove] = useState(false)
@@ -44,8 +41,6 @@ export default function Live() {
 
                 if (message.type === "live_data") {
                     const data = message.payload
-
-                    console.log("Datos recibidos:", data)
 
                     // Si es un array, usarlo directamente
                     if (Array.isArray(data)) {
@@ -79,23 +74,8 @@ export default function Live() {
 
     }, [socket])
 
-    // Obtener deportes únicos para las pestañas con validación
-    const uniqueSports = Array.from(
-        new Set(
-            bettingData.filter((item) => item && item.header && item.header.sportName).map((item) => item.header.sportName),
-        ),
-    )
-
-    // Filtrar datos según la pestaña activa con validación
-    const filteredData =
-        activeTab === "all"
-            ? bettingData
-            : bettingData.filter(
-                (item) => item && item.header && item.header.sportName && item.header.sportName === activeTab,
-            )
-
     // Ordenar datos con validación completa
-    const sortedData = [...filteredData].sort((a, b) => {
+    const sortedData = [...bettingData].sort((a, b) => {
         // Validar que a y b tienen la estructura esperada
         if (!a || !a.header || !b || !b.header) return 0
 
