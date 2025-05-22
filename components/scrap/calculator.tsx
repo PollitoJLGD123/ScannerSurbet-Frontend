@@ -31,7 +31,7 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
     const [profits, setProfits] = useState<number[]>([0, 0])
     const [checked, setChecked] = useState<boolean[]>([false, false])
 
-    // Estados temporales para inputs (solo strings, sin formateo automático)
+    // Estados temporales para inputs (para evitar problemas al escribir)
     const [inputValues, setInputValues] = useState({
         totalStake: "100",
         stakes: ["0", "0"],
@@ -40,11 +40,6 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
 
     // Estado para trackear cambios en la data
     const [dataId, setDataId] = useState<string>("")
-
-    // Función helper para formatear valores solo para visualización
-    const formatForDisplay = useCallback((value: number) => {
-        return Number.isInteger(value) ? value.toString() : value.toFixed(2)
-    }, [])
 
     // Función para inicializar valores con nueva data
     const initializeWithData = useCallback(() => {
@@ -70,10 +65,10 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
         setChecked([false, false])
         setProfits([0, 0])
         
-        // Actualizar input values sin formateo forzado
+        // Actualizar input values
         setInputValues({
             totalStake: initialTotalStake.toString(),
-            stakes: initialStakes.map(stake => displayValue(stake).toString()),
+            stakes: initialStakes.map(stake => displayValue(stake).toFixed(2)),
             odds: newOdds.map(odd => odd.toString())
         })
 
@@ -98,27 +93,29 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
 
         // Si ningún check está marcado, calcular ambos stakes normalmente
         if (!currentChecked[0] && !currentChecked[1]) {
-            newStakes[0] = (currentTotalStake / (currentOdds[0] * cinv))
-            newStakes[1] = (currentTotalStake / (currentOdds[1] * cinv))
+            newStakes[0] = Number.parseFloat((currentTotalStake / (currentOdds[0] * cinv)).toFixed(2))
+            newStakes[1] = Number.parseFloat((currentTotalStake / (currentOdds[1] * cinv)).toFixed(2))
         }
         // Si check1 está marcado, stake1 no cambia, recalcular stake2
         else if (currentChecked[0] && !currentChecked[1]) {
-            newStakes[1] = ((currentStakes[0] * currentOdds[0]) / currentOdds[1])
+            newStakes[1] = Number.parseFloat(((currentStakes[0] * currentOdds[0]) / currentOdds[1]).toFixed(2))
         }
         // Si check2 está marcado, stake2 no cambia, recalcular stake1
         else if (!currentChecked[0] && currentChecked[1]) {
-            newStakes[0] = ((currentStakes[1] * currentOdds[1]) / currentOdds[0])
+            newStakes[0] = Number.parseFloat(((currentStakes[1] * currentOdds[1]) / currentOdds[0]).toFixed(2))
         }
+
+
 
         // Calcular ganancias
         const actualTotalStake = newStakes[0] + newStakes[1]
         const newProfits = [
-            (newStakes[0] * currentOdds[0] - actualTotalStake),
-            (newStakes[1] * currentOdds[1] - actualTotalStake),
+            Number.parseFloat((newStakes[0] * currentOdds[0] - actualTotalStake).toFixed(2)),
+            Number.parseFloat((newStakes[1] * currentOdds[1] - actualTotalStake).toFixed(2)),
         ]
 
         // Calcular porcentaje de beneficio
-        const percentage = actualTotalStake > 0 ? ((newProfits[0] * 100) / actualTotalStake) : 0
+        const percentage = actualTotalStake > 0 ? Number.parseFloat(((newProfits[0] * 100) / actualTotalStake).toFixed(2)) : 0
 
         setTotalStake(actualTotalStake)
 
@@ -141,22 +138,22 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
         if (!checked[0] && !checked[1]) {
             setInputValues(prev => ({
                 ...prev,
-                stakes: newStakes.map(stake => displayValue(stake).toString())
+                stakes: newStakes.map(stake => displayValue(stake).toFixed(2))
             }))
         }
     }, [odds, totalStake, checked, calculateValues])
 
-    // Actualizar input values cuando cambia la moneda (sin formateo forzado)
+    // Actualizar input values cuando cambia la moneda
     useEffect(() => {
         setInputValues(prev => ({
             ...prev,
-            totalStake: displayValue(totalStake).toString(),
-            stakes: stakes.map(stake => displayValue(stake).toString())
+            totalStake: displayValue(totalStake).toFixed(2),
+            stakes: stakes.map(stake => displayValue(stake).toFixed(2))
         }))
     }, [currency, exchangeRate, totalStake, stakes])
 
     // Manejar cambios en las cuotas
-    const handleOddsChange = useCallback((index: number, value: string) => {
+    const handleOddsChange = useCallback((index: number, value: string, stakes: number[]) => {
         // Actualizar valor de input inmediatamente
         setInputValues(prev => ({
             ...prev,
@@ -170,11 +167,30 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
             newOdds[index] = numValue
             setOdds(newOdds)
         }
-    }, [odds])
+
+        // Asegurarse de que stakes es un array
+        const safeStakes = Array.isArray(stakes) ? stakes : [0, 0]
+
+        let newStake 
+
+        if(index === 0){
+            newStake = (safeStakes[1]*odds[1])/(odds[0])
+        }
+        else{
+            newStake = (safeStakes[0]*odds[0])/(odds[1])
+        }
+
+        setStakes(
+            safeStakes.map((stake, i) => i === index ? newStake : stake)
+        )
+
+        console.log(safeStakes[index])
+
+    }, [])
 
     // Manejar cambios en los stakes individuales
     const handleStakeChange = useCallback((index: number, value: string) => {
-        // Actualizar valor de input inmediatamente sin formateo
+        // Actualizar valor de input inmediatamente
         setInputValues(prev => ({
             ...prev,
             stakes: prev.stakes.map((stake, i) => i === index ? value : stake)
@@ -192,16 +208,16 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
                 const otherIndex = index === 0 ? 1 : 0
                 if (!checked[otherIndex]) {
                     if (index === 0) {
-                        newStakes[1] = (actualValue * odds[0]) / odds[1]
+                        newStakes[1] = Number.parseFloat(((actualValue * odds[0]) / odds[1]).toFixed(2))
                     } else {
-                        newStakes[0] = (actualValue * odds[1]) / odds[0]
+                        newStakes[0] = Number.parseFloat(((actualValue * odds[1]) / odds[0]).toFixed(2))
                     }
                     
                     // Actualizar el input del otro stake también
                     setInputValues(prev => ({
                         ...prev,
                         stakes: prev.stakes.map((stake, i) => 
-                            i === otherIndex ? displayValue(newStakes[otherIndex]).toString() : stake
+                            i === otherIndex ? displayValue(newStakes[otherIndex]).toFixed(2) : stake
                         )
                     }))
                 }
@@ -214,14 +230,14 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
             setTotalStake(newTotalStake)
             setInputValues(prev => ({
                 ...prev,
-                totalStake: displayValue(newTotalStake).toString()
+                totalStake: displayValue(newTotalStake).toFixed(2)
             }))
         }
-    }, [stakes, odds, currency, exchangeRate, checked])
+    }, [])
 
     // Manejar cambios en el total stake
     const handleTotalStakeChange = useCallback((value: string) => {
-        // Actualizar valor de input inmediatamente sin formateo
+        // Actualizar valor de input inmediatamente
         setInputValues(prev => ({ ...prev, totalStake: value }))
 
         // Validar y actualizar estado
@@ -330,7 +346,7 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
 
                 <div className="mt-2 flex items-center justify-between">
                     <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
-                        {formatForDisplay(percentage)}% de beneficio
+                        {percentage.toFixed(2)}% de beneficio
                     </Badge>
                     <Badge variant="outline" className="bg-sky-500/20 text-primary border-sky-600">
                         {data?.header?.sportName || "Sport"}
@@ -391,7 +407,7 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
                                                 variant="outline"
                                                 className="bg-secondary/10 text-secondary-foreground border-secondary/30"
                                             >
-                                                1 USD = {formatForDisplay(exchangeRate)} PEN
+                                                1 USD = {exchangeRate.toFixed(2)} PEN
                                             </Badge>
                                         </TooltipTrigger>
                                         <TooltipContent>
@@ -408,24 +424,24 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
                             <div>
                                 <p className="text-sm text-muted-foreground">Stake Total</p>
                                 <p className="text-xl font-bold">
-                                    {getCurrencySymbol(currency)} {formatForDisplay(displayValue(totalStake))}
+                                    {getCurrencySymbol(currency)} {displayValue(totalStake).toFixed(2)}
                                 </p>
                                 <p className="text-xs text-muted-foreground">
                                     {currency === "USD"
-                                        ? `≈ S/ ${formatForDisplay(convertCurrency(totalStake, "PEN"))}`
-                                        : `≈ $ ${formatForDisplay(convertCurrency(displayValue(totalStake), "USD"))}`}
+                                        ? `≈ S/ ${convertCurrency(totalStake, "PEN").toFixed(2)}`
+                                        : `≈ $ ${convertCurrency(displayValue(totalStake), "USD").toFixed(2)}`}
                                 </p>
                             </div>
                             <ArrowRight className="h-5 w-5 text-muted-foreground mx-2" />
                             <div>
                                 <p className="text-sm text-muted-foreground">Ganancia Potencial</p>
                                 <p className={`text-xl font-bold ${totalProfit > 0 ? "text-green-500" : "text-destructive"}`}>
-                                    {getCurrencySymbol(currency)} {formatForDisplay(displayValue(totalProfit))}
+                                    {getCurrencySymbol(currency)} {displayValue(totalProfit).toFixed(2)}
                                 </p>
                                 <p className="text-xs text-muted-foreground">
                                     {currency === "USD"
-                                        ? `≈ S/ ${formatForDisplay(convertCurrency(totalProfit, "PEN"))}`
-                                        : `≈ $ ${formatForDisplay(convertCurrency(displayValue(totalProfit), "USD"))}`}
+                                        ? `≈ S/ ${convertCurrency(totalProfit, "PEN").toFixed(2)}`
+                                        : `≈ $ ${convertCurrency(displayValue(totalProfit), "USD").toFixed(2)}`}
                                 </p>
                             </div>
                         </div>
@@ -452,12 +468,13 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
                                         <TableCell className="text-xs">{section?.market || "Apuesta"}</TableCell>
                                         <TableCell>
                                             <Input
-                                                type="text"
+                                                type="text"  // Cambiado de number a text
                                                 value={inputValues.odds[index] || ""}
                                                 onChange={(e) => {
+                                                    // Validar que sea un número válido
                                                     const value = e.target.value;
                                                     if (value === "" || /^[0-9]*\.?[0-9]*$/.test(value)) {
-                                                        handleOddsChange(index, value);
+                                                        handleOddsChange(index, value, stakes);
                                                     }
                                                 }}
                                                 className="w-24 h-8 text-center"
@@ -467,15 +484,16 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
                                             <div className="flex items-center">
                                                 <span className="text-xs mr-1">{getCurrencySymbol(currency)}</span>
                                                 <Input
-                                                    type="text"
-                                                    value={parseFloat(inputValues.stakes[index]).toFixed(2) || ""}
+                                                    type="text"  // Cambiado de number a text
+                                                    value={inputValues.stakes[index] || ""}
                                                     className="w-24 h-8 text-center"
                                                     onChange={(e) => {
-                                                        const value = e.target.value;
-                                                        if (value === "" || /^[0-9]*\.?[0-9]*$/.test(value)) {
-                                                            handleStakeChange(index, value);
-                                                        }
-                                                    }}
+                                                    // Validar que sea un número válido
+                                                    const value = e.target.value;
+                                                    if (value === "" || /^[0-9]*\.?[0-9]*$/.test(value)) {
+                                                        handleStakeChange(index, e.target.value)
+                                                    }
+                                                }}
                                                 />
                                             </div>
                                         </TableCell>
@@ -486,7 +504,7 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
                                             />
                                         </TableCell>
                                         <TableCell className={profits[index] > 0 ? "text-green-500" : "text-destructive"}>
-                                            {getCurrencySymbol(currency)} {formatForDisplay(displayValue(profits[index] || 0))}
+                                            {getCurrencySymbol(currency)} {displayValue(profits[index] || 0).toFixed(2)}
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -498,20 +516,17 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
                                     <TableCell className="flex items-center gap-1">
                                         {getCurrencySymbol(currency)}
                                         <Input
-                                            type="text"
-                                            value={parseFloat(inputValues.totalStake).toFixed(2)}
-                                            onChange={(e) => {
-                                                const value = e.target.value;
-                                                if (value === "" || /^[0-9]*\.?[0-9]*$/.test(value)) {
-                                                    handleTotalStakeChange(value);
-                                                }
-                                            }}
+                                            type="number"
+                                            value={inputValues.totalStake}
+                                            onChange={(e) => handleTotalStakeChange(e.target.value)}
                                             className="w-24 h-8 text-center"
+                                            step="0.01"
+                                            min="0"
                                         />
                                     </TableCell>
                                     <TableCell></TableCell>
                                     <TableCell className={totalProfit > 0 ? "text-green-500" : "text-destructive"}>
-                                        {getCurrencySymbol(currency)} {formatForDisplay(displayValue(totalProfit))}
+                                        {getCurrencySymbol(currency)} {displayValue(totalProfit).toFixed(2)}
                                     </TableCell>
                                 </TableRow>
                             </TableBody>
@@ -533,7 +548,7 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
                     <div className="text-xs text-muted-foreground -mt-10 space-y-1">
                         <p>* Los stakes se expresan en {currency === "USD" ? "dólares ($)" : "soles (S/)"}</p>
                         <p>* La ganancia potencial se calcula en base a los stakes seleccionados.</p>
-                        <p>* Tipo de cambio actual: 1 USD = {formatForDisplay(exchangeRate)} PEN</p>
+                        <p>* Tipo de cambio actual: 1 USD = {exchangeRate.toFixed(2)} PEN</p>
                     </div>
                 </div>
             </CardContent>
