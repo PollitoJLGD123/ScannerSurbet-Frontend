@@ -9,7 +9,7 @@ import { Calculator } from "@/components/scrap/calculator"
 import type { Surebet, MessageSocket } from "@/types/data.type"
 import { useSocketStore } from "@/components/dashboard/socket/useSocketStore"
 
-export default function Live() {
+export default function Prematch() {
     const [bettingData, setBettingData] = useState<Surebet[]>([])
     const [sortBy, setSortBy] = useState("percent")
     const [isCalculated, setIsCalculated] = useState(false)
@@ -114,7 +114,7 @@ export default function Live() {
 
     return (
         <main className="min-h-screen bg-background text-foreground">
-            <div className="max-w-full mx-auto px-4 space-y-3">
+            <div className="max-w-full mx-auto space-y-3">
                 <header className="space-y-4">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div className="space-y-1">
@@ -161,7 +161,7 @@ export default function Live() {
                         )}
                     </div>
                     <div className="flex-shrink-0">
-                        {isCalculated && dataSelect && <Calculator data={dataSelect} setIsCalculated={setIsCalculated} />}
+                        {isCalculated && dataSelect && <Calculator data={dataSelect} setIsCalculated={setIsCalculated} setDataSelect={setDataSelect} />}
                     </div>
                     <div className="flex-shrink-0">{isRemove}</div>
                 </div>

@@ -103,7 +103,7 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
         // Si check2 está marcado, stake2 no cambia, recalcular stake1
         else if (!currentChecked[0] && currentChecked[1]) {
             newStakes[0] = Number.parseFloat(((currentStakes[1] * currentOdds[1]) / currentOdds[0]).toFixed(2))
-        }
+        } 
 
         // Calcular ganancias
         const actualTotalStake = newStakes[0] + newStakes[1]
@@ -114,6 +114,8 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
 
         // Calcular porcentaje de beneficio
         const percentage = actualTotalStake > 0 ? Number.parseFloat(((newProfits[0] * 100) / actualTotalStake).toFixed(2)) : 0
+
+        setTotalStake(actualTotalStake)
 
         return { newStakes, newProfits, percentage }
     }, [])
@@ -149,7 +151,7 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
     }, [currency, exchangeRate, totalStake, stakes])
 
     // Manejar cambios en las cuotas
-    const handleOddsChange = useCallback((index: number, value: string) => {
+    const handleOddsChange = useCallback((index: number, value: string, stakes: number[]) => {
         // Actualizar valor de input inmediatamente
         setInputValues(prev => ({
             ...prev,
@@ -163,6 +165,9 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
             newOdds[index] = numValue
             setOdds(newOdds)
         }
+
+        
+
     }, [odds])
 
     // Manejar cambios en los stakes individuales
@@ -447,7 +452,7 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
                                             <Input
                                                 type="number"
                                                 value={inputValues.odds[index] || ""}
-                                                onChange={(e) => handleOddsChange(index, e.target.value)}
+                                                onChange={(e) => handleOddsChange(index, e.target.value, stakes)}
                                                 className="w-24 h-8 text-center"
                                                 step="0.01"
                                                 min="0.01"
