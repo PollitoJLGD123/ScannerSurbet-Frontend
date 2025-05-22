@@ -36,6 +36,7 @@ export interface DataFunctionCard {
 export interface DataCalculator {
     data: Surebet;
     setIsCalculated: (value: boolean) => void;
+    setDataSelect: (data: Surebet | null) => void;
 }
 
 export interface MessageSocket {
