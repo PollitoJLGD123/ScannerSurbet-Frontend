@@ -87,8 +87,8 @@ export default function BettingOpportunityCard({
     }
 
     return (
-        <Card className={`${getBgColor(header.percent_color)} transition-all duration-300 border`}>
-            <CardContent className="p-3">
+        <Card className={`${getBgColor(header.percent_color)} transition-all duration-300 border h-[150px]`}>
+            <CardContent className="">
                 <div className="flex justify-between items-start">
                     <div className="flex flex-col">
                         <div className="flex items-center gap-1 mb-0.5">
@@ -140,7 +140,7 @@ export default function BettingOpportunityCard({
                             return (
                                 <div
                                     key={index}
-                                    className="bg-white/70 dark:bg-gray-800/70 flex justify-between py-1 px-3 text-xs rounded-md border border-border/30"
+                                    className="bg-white/70 dark:bg-gray-800/70 flex justify-between px-3 text-xs rounded-md border border-border/30"
                                 >
                                     <div className="flex flex-col mb-1 items-center">
                                         <Badge

@@ -12,6 +12,7 @@ import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import type { DataCalculator } from "@/types/data.type"
+import { set } from "react-hook-form"
 
 export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalculator) {
     // Estado principal
@@ -19,6 +20,11 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
     const [currency, setCurrency] = useState("")
     const [exchangeRate, setExchangeRate] = useState(3.7)
     const [showExchangeRateInput, setShowExchangeRateInput] = useState(false)
+    const [showInputSoles, setShowInputSoles] = useState(false)
+
+    function handleInputSolesChange(value: boolean) {
+        setShowInputSoles(value)
+    }
 
     // Extraer secciones (casas de apuestas) del objeto data
     const sections = useMemo(() => {
@@ -30,6 +36,7 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
     const [stakes, setStakes] = useState<number[]>([0, 0])
     const [profits, setProfits] = useState<number[]>([0, 0])
     const [checked, setChecked] = useState<boolean[]>([false, false])
+    const [inputSoles, setInputSoles] = useState<number[]>([0, 0])
 
     // Estado para trackear cambios en la data
     const [dataId, setDataId] = useState<string>("")
@@ -40,7 +47,7 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
 
         const newOdds = sections.map((section) => Number.parseFloat(section.odds))
         const initialTotalStake = 100
-        
+
         // Calcular stakes iniciales si las odds son válidas
         let initialStakes = [0, 0]
         if (newOdds[0] > 0 && newOdds[1] > 0) {
@@ -54,6 +61,7 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
         // Resetear todos los estados
         setOdds(newOdds)
         setStakes(initialStakes)
+        setInputSoles(initialStakes.map(stake => Number((stake * exchangeRate).toFixed(2))))
         setTotalStake(initialTotalStake)
         setChecked([false, false])
         setProfits([0, 0])
@@ -92,6 +100,7 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
         ]
 
         setTotalStake(Number(actualTotalStake.toFixed(2)))
+        //setInputSoles(newStakes.map(stake => Number((stake * exchangeRate).toFixed(2))))
 
         return { newStakes, newProfits }
     }, [checked, currency, totalStake, odds])
@@ -143,13 +152,15 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
                     } else {
                         newStakes[0] = Number.parseFloat(((numValue * odds[1]) / odds[0]).toFixed(2))
                     }
-                    
+
                 }
             }
             setStakes(newStakes)
+            
             // Actualizar total stake
             const newTotalStake = newStakes[0] + newStakes[1]
             setTotalStake(Number(newTotalStake.toFixed(2)))
+            setInputSoles(newStakes.map(stake => Number((stake * exchangeRate).toFixed(2))))
         }
     }, [currency, exchangeRate, checked, odds])
 
@@ -229,7 +240,7 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
         const total = Number.parseFloat(((profits[0] + profits[1]) / 2).toFixed(2))
         const actualTotalStake = stakes[0] + stakes[1]
         const perc = actualTotalStake > 0 ? Number.parseFloat(((total * 100) / actualTotalStake).toFixed(2)) : 0
-        
+
         return {
             totalProfit: total,
             percentage: perc
@@ -247,8 +258,18 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
         setDataSelect(null)
     }, [setIsCalculated, setDataSelect])
 
+    const handleInputSoles = useCallback((index: number, value: string) => {
+        const numValue = Number.parseFloat(value)
+        if (!isNaN(numValue) && numValue >= 0) {
+            const newInputSoles = [...inputSoles]
+            newInputSoles[index] = numValue
+            setInputSoles(newInputSoles)
+        }
+        handleStakeChange(index, (numValue / exchangeRate).toString())
+    }, [inputSoles])
+
     return (
-        <Card className="md:w-[590px] ml-4 sticky top-[70px] border shadow-md animate-in slide-in-from-right duration-300">
+        <Card className="md:w-[730px] ml-4 sticky top-[70px] border shadow-md animate-in slide-in-from-right duration-300">
             <CardHeader>
                 <div className="flex justify-between items-center">
                     <div className="flex items-center gap-2">
@@ -374,7 +395,8 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
                                     <TableHead>Casa</TableHead>
                                     <TableHead>Apuesta</TableHead>
                                     <TableHead>Cuota</TableHead>
-                                    <TableHead>Stake</TableHead>
+                                    <TableHead>Stake ($)</TableHead>
+                                    {showInputSoles && <TableHead>Stake (PEN)</TableHead>}
                                     <TableHead>Fijar</TableHead>
                                     <TableHead>Ganancia</TableHead>
                                 </TableRow>
@@ -405,6 +427,19 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
                                                 />
                                             </div>
                                         </TableCell>
+                                        {showInputSoles && 
+                                            <TableCell>
+                                                <div className="flex items-center">
+                                                    <span className="text-xs mr-1">S./</span>
+                                                    <Input
+                                                        type="number"
+                                                        value={inputSoles[index] || ""}
+                                                        onChange={(e) => handleInputSoles(index, e.target.value)}
+                                                        className="w-24 h-8 text-center border-black/30"
+                                                    />
+                                                </div>
+                                            </TableCell>
+                                        }
                                         <TableCell>
                                             <Checkbox
                                                 checked={checked[index] || false}
@@ -418,7 +453,19 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
                                 ))}
 
                                 <TableRow className="font-bold bg-muted/30">
-                                    <TableCell colSpan={3} className="text-right">
+
+                                    <TableCell colSpan={1} className="text-right flex items-center gap-2">
+                                        <Button
+                                            className="px-2 py-1 text-xs bg-green-50 text-black hover:bg-green-100 border border-green-800 dark:bg-green-800 dark:text-white dark:border-green-600"
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => setShowInputSoles(!showInputSoles)}
+                                        >
+                                            Soles
+                                        </Button>
+                                    </TableCell>
+
+                                    <TableCell colSpan={2} className="text-right">
                                         Total:
                                     </TableCell>
                                     <TableCell className="flex items-center gap-1">
@@ -429,10 +476,6 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
                                             onChange={(e) => handleTotalStakeChange(e.target.value)}
                                             className="w-24 h-8 text-center"
                                         />
-                                    </TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell className={totalProfit > 0 ? "text-green-500" : "text-destructive"}>
-                                        {getCurrencySymbol(currency)} {convertCurrency(totalProfit, currency).toFixed(2)}
                                     </TableCell>
                                 </TableRow>
                             </TableBody>
