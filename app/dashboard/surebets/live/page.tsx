@@ -31,6 +31,7 @@ export default function Live() {
         selectedBookmakers: [],
     })
     const socket = useSocketStore((state) => state.socket)
+    const reconnection = useSocketStore((state) => state.connected)
 
     // Function to apply filters to data
     const applyFiltersToData = useCallback((data: Surebet[], filters: FilterState): Surebet[] => {
@@ -68,7 +69,7 @@ export default function Live() {
     }, [bettingData, currentFilters, applyFiltersToData])
 
     useEffect(() => {
-        if (!socket) {
+        if (!reconnection || !socket) {
             console.log("Socket no establecido")
             return
         }
@@ -170,7 +171,7 @@ export default function Live() {
         // The useEffect will automatically apply the filters to the current data
     }, [])
 
-    /*if (!socket || !connected) {
+    if (!socket || !reconnection) {
         return (
             <div className="flex items-center justify-center min-h-screen bg-background">
                 <div className="flex flex-col items-center gap-4">
@@ -181,7 +182,7 @@ export default function Live() {
                 </div>
             </div>
         )
-    }*/
+    }
     return (
         <main className="min-h-screen bg-background text-foreground">
             <div className="max-w-full mx-auto space-y-3">
