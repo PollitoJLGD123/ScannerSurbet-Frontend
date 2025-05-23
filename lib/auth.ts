@@ -25,6 +25,7 @@ export async function login(data: LoginData): Promise<UserProfile> {
   } catch (error: unknown) {
     if (typeof error === 'object' && error !== null) {
       // Verificar error axios
+      console.log(error)
       const axiosError = error as { 
         isAxiosError?: boolean;
         response?: { 

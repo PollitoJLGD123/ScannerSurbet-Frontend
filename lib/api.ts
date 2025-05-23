@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getAuthCookie, removeAuthCookie } from './cookies';
 
 const api = axios.create({
-  baseURL: process.env.API_URL_LOCAL,
+  baseURL: process.env.API_URL_LOCAL || "http://localhost:4002",
 });
 
 // añadir token de autenticación a todas las peticiones
