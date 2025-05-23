@@ -107,7 +107,7 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
         const { newStakes, newProfits } = calculateValues(odds, totalStake, checked, stakes)
         setStakes(newStakes)
         setProfits(newProfits)
-    }, [odds, totalStake])
+    }, [odds, totalStake, checked])
 
     // Actualizar values cuando cambia la moneda
     useEffect(() => {
@@ -151,7 +151,7 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
             const newTotalStake = newStakes[0] + newStakes[1]
             setTotalStake(Number(newTotalStake.toFixed(2)))
         }
-    }, [currency, exchangeRate])
+    }, [currency, exchangeRate, checked])
 
     // Manejar cambios en el total stake
     const handleTotalStakeChange = useCallback((value: string) => {

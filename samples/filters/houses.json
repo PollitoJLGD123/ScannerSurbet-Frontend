@@ -1,0 +1,177 @@
+[
+    {
+        "surebet": "live",
+        "items": [
+            {
+                "name": "20bet"
+            },
+            {
+                "name": "888Sport"
+            },
+            {
+                "name": "Apuesta Total"
+            },
+            {
+                "name": "Bet365"
+            },
+            {
+                "name": "Betano"
+            },
+            {
+                "name": "Betcris"
+            },
+            {
+                "name": "Betfair"
+            },
+            {
+                "name": "Betsson"
+            },
+            {
+                "name": "Betway"
+            },
+            {
+                "name": "Bwin"
+            },
+            {
+                "name": "Codere"
+            },
+            {
+                "name": "Doradobet"
+            },
+            {
+                "name": "Duelbits"
+            },
+            {
+                "name": "Ecuabet"
+            },
+            {
+                "name": "FortuneJack"
+            },
+            {
+                "name": "Goldenpalace"
+            },
+            {
+                "name": "LSBet"
+            },
+            {
+                "name": "Meridianbet"
+            },
+            {
+                "name": "Mozzartbet"
+            },
+            {
+                "name": "Novibet"
+            },
+            {
+                "name": "Pinnacle"
+            },
+            {
+                "name": "Retabet"
+            },
+            {
+                "name": "Rivalo"
+            },
+            {
+                "name": "Pokerstars"
+            },
+            {
+                "name": "Tinbet"
+            },
+            {
+                "name": "Unibet"
+            },
+            {
+                "name": "Vbet"
+            },
+            {
+                "name": "Stake"
+            },
+            {
+                "name": "WilliamHill"
+            },
+            {
+                "name": "Winamax"
+            },
+            {
+                "name": "Sportium"
+            },
+            {
+                "name": "Yajuego"
+            }
+        ]
+    },
+    {
+        "surebet": "prematch",
+        "items": [
+            {
+                "name": "20bet"
+            },
+            {
+                "name": "888Sport"
+            },
+            {
+                "name": "Apuesta Total"
+            },
+            {
+                "name": "Bet365"
+            },
+            {
+                "name": "Betano"
+            },
+            {
+                "name": "Betfair"
+            },
+            {
+                "name": "Betsson"
+            },
+            {
+                "name": "Betway"
+            },
+            {
+                "name": "Bwin"
+            },
+            {
+                "name": "Codere"
+            },
+            {
+                "name": "Duelbits"
+            },
+            {
+                "name": "Ecuabet"
+            },
+            {
+                "name": "Goldenpalace"
+            },
+            {
+                "name": "LSBet"
+            },
+            {
+                "name": "Pinnacle"
+            },
+            {
+                "name": "Pokerstars"
+            },
+            {
+                "name": "Rivalo"
+            },
+            {
+                "name": "Tinbet"
+            },
+            {
+                "name": "Unibet"
+            },
+            {
+                "name": "Vbet"
+            },
+            {
+                "name": "Stake"
+            },
+            {
+                "name": "WilliamHill"
+            },
+            {
+                "name": "Yajuego"
+            }
+        ]
+    }
+]
