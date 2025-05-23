@@ -10,10 +10,6 @@ export function initWebSocket(url: string) {
         setSocket, setConnected
     } = useSocketStore.getState()
 
-    if (currentSocket) {
-        currentSocket.close();
-    }
-
     const socket = new WebSocket(url)
     currentSocket = socket;
     setSocket(socket)
@@ -34,6 +30,7 @@ export function initWebSocket(url: string) {
     socket.onclose = () => {
         console.log('❌ WebSocket desconectado, intentando reconectar en 5 segundos...');
         setConnected(false)
+        currentSocket = null;
         if (!reconnectInterval) {
             reconnectInterval = setInterval(() => {
                 console.log('🔄 Intentando reconectar...');
@@ -59,6 +56,6 @@ export function closeWebSocket() {
 }
 
 export function returnSocket(){
-    return { currentSocket, }
+    return { currentSocket }
 }
 
