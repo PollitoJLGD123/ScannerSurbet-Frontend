@@ -38,13 +38,10 @@ export default function LoginPage() {
   })
   async function onSubmit(data: LoginFormValues) {
     setIsLoading(true)
-    // Limpiar errores previos
     form.clearErrors()
-    
-    try {
+      try {
       await login(data)
-      toast.success('Inicio de sesión exitoso', { description: 'Bienvenido a Arbisure' })
-      router.push('/dashboard')
+      router.push('/dashboard?login=success')
     } catch (error: unknown) {
       
       // Obtener el mensaje de error
@@ -69,7 +66,7 @@ export default function LoginPage() {
         else if (errorMessage.includes('cuenta ha sido desactivada')) {
           form.setError('correo', { 
             type: 'manual', 
-            message: 'Cuenta desactivada. Contacte con soporte.' 
+            message: 'Cuenta en proceso de activación. Contacte con soporte.' 
           })
         }
         else {

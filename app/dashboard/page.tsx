@@ -1,8 +1,20 @@
+"use client"
+
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { DashboardWelcome } from "@/components/dashboard/welcome"
 import { Activity, Building2, TrendingUp } from "lucide-react"
+import { useSearchParams } from "next/navigation"
+import { useEffect } from "react"
+import { toast } from "sonner"
 
 export default function DashboardPage() {
+  const searchParams = useSearchParams()
+  useEffect(() => {
+    if (searchParams.get('login') === 'success') {
+      toast.success('Inicio de sesión exitoso', { description: 'Bienvenido a Arbisure' })
+    }
+  }, [searchParams])
+
   return (
     <div className="space-y-6">
       <DashboardWelcome />

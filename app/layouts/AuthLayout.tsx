@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Toaster } from "sonner";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -15,6 +16,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       </div>
       <main className="flex-grow flex items-center justify-center">
         {children}
+        <Toaster richColors />
       </main>
     </div>
   );
