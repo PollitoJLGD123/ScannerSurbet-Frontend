@@ -204,8 +204,8 @@ export default function RegistroPage() {
       
       await registerUser(registrationData)
       
-      toast.success('Registro exitoso', { description: 'Su cuenta ha sido creada correctamente' })
-      router.push('/dashboard')
+      toast.success('Registro exitoso', { description: 'Su cuenta ha sido creada correctamente, pero aun no esta activa' })
+      router.push('/login')
     } catch (error: unknown) {
       console.error('Error de registro:', error)
       const message = error instanceof Error ? error.message : 'Ocurrió un error al crear la cuenta'
