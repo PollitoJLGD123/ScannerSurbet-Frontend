@@ -53,7 +53,7 @@ export async function login(data: LoginData): Promise<UserProfile> {
 
 export async function register(data: RegisterData): Promise<UserProfile> {
   const res = await api.post<AuthResponse<AuthPayload>>('api/auth/register', data);
-  setAuthCookie(res.data.data.token);
+  //setAuthCookie(res.data.data.token);
   return res.data.data.user;
 }
 
