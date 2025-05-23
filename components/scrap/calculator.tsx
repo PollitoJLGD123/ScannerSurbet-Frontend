@@ -16,7 +16,7 @@ import type { DataCalculator } from "@/types/data.type"
 export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalculator) {
     // Estado principal
     const [totalStake, setTotalStake] = useState(100)
-    const [currency, setCurrency] = useState("USD")
+    const [currency, setCurrency] = useState("")
     const [exchangeRate, setExchangeRate] = useState(3.7)
     const [showExchangeRateInput, setShowExchangeRateInput] = useState(false)
 
@@ -31,13 +31,6 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
     const [profits, setProfits] = useState<number[]>([0, 0])
     const [checked, setChecked] = useState<boolean[]>([false, false])
 
-    // Estados temporales para inputs (para evitar problemas al escribir)
-    const [inputValues, setInputValues] = useState({
-        totalStake: "100",
-        stakes: ["0", "0"],
-        odds: ["0", "0"]
-    })
-
     // Estado para trackear cambios en la data
     const [dataId, setDataId] = useState<string>("")
 
@@ -45,7 +38,7 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
     const initializeWithData = useCallback(() => {
         if (sections.length === 0) return
 
-        const newOdds = sections.map((section) => Number.parseFloat(section.odds || "0"))
+        const newOdds = sections.map((section) => Number.parseFloat(section.odds))
         const initialTotalStake = 100
         
         // Calcular stakes iniciales si las odds son válidas
@@ -64,13 +57,6 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
         setTotalStake(initialTotalStake)
         setChecked([false, false])
         setProfits([0, 0])
-        
-        // Actualizar input values
-        setInputValues({
-            totalStake: initialTotalStake.toString(),
-            stakes: initialStakes.map(stake => displayValue(stake).toFixed(2)),
-            odds: newOdds.map(odd => odd.toString())
-        })
 
         // Generar ID único para la data actual
         const newDataId = `${sections[0]?.event_name || ""}-${sections[0]?.odds || ""}-${sections[1]?.odds || ""}-${Date.now()}`
@@ -79,13 +65,6 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
 
     // Función para calcular stakes y ganancias
     const calculateValues = useCallback((currentOdds: number[], currentTotalStake: number, currentChecked: boolean[], currentStakes: number[]) => {
-        if (currentOdds[0] <= 0 || currentOdds[1] <= 0) {
-            return {
-                newStakes: [0, 0],
-                newProfits: [0, 0],
-                percentage: 0
-            }
-        }
 
         // Calcular Cinv (factor de inversión)
         const cinv = 1 / currentOdds[0] + 1 / currentOdds[1]
@@ -105,8 +84,6 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
             newStakes[0] = Number.parseFloat(((currentStakes[1] * currentOdds[1]) / currentOdds[0]).toFixed(2))
         }
 
-
-
         // Calcular ganancias
         const actualTotalStake = newStakes[0] + newStakes[1]
         const newProfits = [
@@ -114,52 +91,32 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
             Number.parseFloat((newStakes[1] * currentOdds[1] - actualTotalStake).toFixed(2)),
         ]
 
-        // Calcular porcentaje de beneficio
-        const percentage = actualTotalStake > 0 ? Number.parseFloat(((newProfits[0] * 100) / actualTotalStake).toFixed(2)) : 0
+        setTotalStake(Number(actualTotalStake.toFixed(2)))
 
-        setTotalStake(actualTotalStake)
-
-        return { newStakes, newProfits, percentage }
+        return { newStakes, newProfits }
     }, [])
 
     // Inicializar cuando cambia la data
     useEffect(() => {
         initializeWithData()
+        setCurrency("USD")
     }, [initializeWithData])
 
     // Recalcular cuando cambian las cuotas, total stake o checkboxes
     useEffect(() => {
         const { newStakes, newProfits } = calculateValues(odds, totalStake, checked, stakes)
-        
         setStakes(newStakes)
         setProfits(newProfits)
-        
-        // Solo actualizar input values si no están siendo editados activamente
-        if (!checked[0] && !checked[1]) {
-            setInputValues(prev => ({
-                ...prev,
-                stakes: newStakes.map(stake => displayValue(stake).toFixed(2))
-            }))
-        }
-    }, [odds, totalStake, checked, calculateValues])
+    }, [odds, totalStake])
 
-    // Actualizar input values cuando cambia la moneda
+    // Actualizar values cuando cambia la moneda
     useEffect(() => {
-        setInputValues(prev => ({
-            ...prev,
-            totalStake: displayValue(totalStake).toFixed(2),
-            stakes: stakes.map(stake => displayValue(stake).toFixed(2))
-        }))
-    }, [currency, exchangeRate, totalStake, stakes])
+        setTotalStake(convert(totalStake, currency))
+        setStakes(stakes.map(stake => convert(stake, currency)))
+    }, [currency])
 
     // Manejar cambios en las cuotas
-    const handleOddsChange = useCallback((index: number, value: string, stakes: number[]) => {
-        // Actualizar valor de input inmediatamente
-        setInputValues(prev => ({
-            ...prev,
-            odds: prev.odds.map((odd, i) => i === index ? value : odd)
-        }))
-
+    const handleOddsChange = useCallback((index: number, value: string) => {
         // Validar y actualizar estado solo si es un número válido
         const numValue = Number.parseFloat(value)
         if (!isNaN(numValue) && numValue > 0) {
@@ -167,86 +124,44 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
             newOdds[index] = numValue
             setOdds(newOdds)
         }
-
-        // Asegurarse de que stakes es un array
-        const safeStakes = Array.isArray(stakes) ? stakes : [0, 0]
-
-        let newStake 
-
-        if(index === 0){
-            newStake = (safeStakes[1]*odds[1])/(odds[0])
-        }
-        else{
-            newStake = (safeStakes[0]*odds[0])/(odds[1])
-        }
-
-        setStakes(
-            safeStakes.map((stake, i) => i === index ? newStake : stake)
-        )
-
-        console.log(safeStakes[index])
-
-    }, [])
+    }, [odds])
 
     // Manejar cambios en los stakes individuales
     const handleStakeChange = useCallback((index: number, value: string) => {
-        // Actualizar valor de input inmediatamente
-        setInputValues(prev => ({
-            ...prev,
-            stakes: prev.stakes.map((stake, i) => i === index ? value : stake)
-        }))
-
         // Validar y actualizar estado
         const numValue = Number.parseFloat(value)
         if (!isNaN(numValue) && numValue >= 0) {
-            const actualValue = currency === "USD" ? numValue : numValue / exchangeRate
             const newStakes = [...stakes]
-            newStakes[index] = actualValue
+            newStakes[index] = numValue
 
             // Recalcular el otro stake para mantener la proporción solo si no está fijado
             if (odds[0] > 0 && odds[1] > 0) {
                 const otherIndex = index === 0 ? 1 : 0
                 if (!checked[otherIndex]) {
                     if (index === 0) {
-                        newStakes[1] = Number.parseFloat(((actualValue * odds[0]) / odds[1]).toFixed(2))
+                        newStakes[1] = Number.parseFloat(((numValue * odds[0]) / odds[1]).toFixed(2))
                     } else {
-                        newStakes[0] = Number.parseFloat(((actualValue * odds[1]) / odds[0]).toFixed(2))
+                        newStakes[0] = Number.parseFloat(((numValue * odds[1]) / odds[0]).toFixed(2))
                     }
                     
-                    // Actualizar el input del otro stake también
-                    setInputValues(prev => ({
-                        ...prev,
-                        stakes: prev.stakes.map((stake, i) => 
-                            i === otherIndex ? displayValue(newStakes[otherIndex]).toFixed(2) : stake
-                        )
-                    }))
                 }
             }
-
             setStakes(newStakes)
-            
             // Actualizar total stake
             const newTotalStake = newStakes[0] + newStakes[1]
-            setTotalStake(newTotalStake)
-            setInputValues(prev => ({
-                ...prev,
-                totalStake: displayValue(newTotalStake).toFixed(2)
-            }))
+            setTotalStake(Number(newTotalStake.toFixed(2)))
         }
-    }, [])
+    }, [currency, exchangeRate])
 
     // Manejar cambios en el total stake
     const handleTotalStakeChange = useCallback((value: string) => {
-        // Actualizar valor de input inmediatamente
-        setInputValues(prev => ({ ...prev, totalStake: value }))
-
         // Validar y actualizar estado
         const numValue = Number.parseFloat(value)
         if (!isNaN(numValue) && numValue >= 0) {
-            const actualValue = currency === "USD" ? numValue : numValue / exchangeRate
-            setTotalStake(actualValue)
+            //const actualValue = currency === "USD" ? numValue : numValue / exchangeRate
+            setTotalStake(Number(numValue.toFixed(2)))
         }
-    }, [currency, exchangeRate])
+    }, [])
 
     // Manejar cambios en los checkboxes
     const handleCheckChange = useCallback((index: number, value: boolean) => {
@@ -290,16 +205,24 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
         return amount
     }, [currency, exchangeRate])
 
+    // Función para convertir valores entre monedas
+    const convert = (amount: number, targetCurrency: string) => {
+        // Convertir de USD a PEN
+        if (targetCurrency === "PEN") {
+            return amount * exchangeRate
+        }
+        // Convertir de PEN a USD
+        if (targetCurrency === "USD") {
+            return amount / exchangeRate
+        }
+
+        return amount
+    }
+
     // Obtener símbolo de moneda
     const getCurrencySymbol = useCallback((currencyCode: string) => {
         return currencyCode === "USD" ? "$" : "S/"
     }, [])
-
-    // Convertir valores a la moneda actual para mostrar
-    const displayValue = useCallback((value: number, targetCurrency?: string) => {
-        const target = targetCurrency || currency
-        return target === "USD" ? value : value * exchangeRate
-    }, [currency, exchangeRate])
 
     // Calcular ganancia total y porcentaje
     const { totalProfit, percentage } = useMemo(() => {
@@ -319,11 +242,6 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
         setProfits([0, 0])
         setChecked([false, false])
         setTotalStake(100)
-        setInputValues({
-            totalStake: "100",
-            stakes: ["0", "0"],
-            odds: ["0", "0"]
-        })
         setDataId("")
         setIsCalculated(false)
         setDataSelect(null)
@@ -424,24 +342,24 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
                             <div>
                                 <p className="text-sm text-muted-foreground">Stake Total</p>
                                 <p className="text-xl font-bold">
-                                    {getCurrencySymbol(currency)} {displayValue(totalStake).toFixed(2)}
+                                    {getCurrencySymbol(currency)} {convertCurrency(totalStake, currency)}
                                 </p>
                                 <p className="text-xs text-muted-foreground">
                                     {currency === "USD"
                                         ? `≈ S/ ${convertCurrency(totalStake, "PEN").toFixed(2)}`
-                                        : `≈ $ ${convertCurrency(displayValue(totalStake), "USD").toFixed(2)}`}
+                                        : `≈ $ ${convertCurrency(totalStake, "USD").toFixed(2)}`}
                                 </p>
                             </div>
                             <ArrowRight className="h-5 w-5 text-muted-foreground mx-2" />
                             <div>
                                 <p className="text-sm text-muted-foreground">Ganancia Potencial</p>
                                 <p className={`text-xl font-bold ${totalProfit > 0 ? "text-green-500" : "text-destructive"}`}>
-                                    {getCurrencySymbol(currency)} {displayValue(totalProfit).toFixed(2)}
+                                    {getCurrencySymbol(currency)} {convertCurrency(totalProfit, currency).toFixed(2)}
                                 </p>
                                 <p className="text-xs text-muted-foreground">
                                     {currency === "USD"
                                         ? `≈ S/ ${convertCurrency(totalProfit, "PEN").toFixed(2)}`
-                                        : `≈ $ ${convertCurrency(displayValue(totalProfit), "USD").toFixed(2)}`}
+                                        : `≈ $ ${convertCurrency(totalProfit, "USD").toFixed(2)}`}
                                 </p>
                             </div>
                         </div>
@@ -468,32 +386,22 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
                                         <TableCell className="text-xs">{section?.market || "Apuesta"}</TableCell>
                                         <TableCell>
                                             <Input
-                                                type="text"  // Cambiado de number a text
-                                                value={inputValues.odds[index] || ""}
-                                                onChange={(e) => {
-                                                    // Validar que sea un número válido
-                                                    const value = e.target.value;
-                                                    if (value === "" || /^[0-9]*\.?[0-9]*$/.test(value)) {
-                                                        handleOddsChange(index, value, stakes);
-                                                    }
-                                                }}
+                                                type="number"
+                                                value={odds[index] || ""}
+                                                onChange={(e) => handleOddsChange(index, e.target.value)}
                                                 className="w-24 h-8 text-center"
+                                                step="0.01"
+                                                min="0.01"
                                             />
                                         </TableCell>
                                         <TableCell>
                                             <div className="flex items-center">
                                                 <span className="text-xs mr-1">{getCurrencySymbol(currency)}</span>
                                                 <Input
-                                                    type="text"  // Cambiado de number a text
-                                                    value={inputValues.stakes[index] || ""}
+                                                    type="number"
+                                                    value={stakes[index] || ""}
+                                                    onChange={(e) => handleStakeChange(index, e.target.value)}
                                                     className="w-24 h-8 text-center"
-                                                    onChange={(e) => {
-                                                    // Validar que sea un número válido
-                                                    const value = e.target.value;
-                                                    if (value === "" || /^[0-9]*\.?[0-9]*$/.test(value)) {
-                                                        handleStakeChange(index, e.target.value)
-                                                    }
-                                                }}
                                                 />
                                             </div>
                                         </TableCell>
@@ -504,7 +412,7 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
                                             />
                                         </TableCell>
                                         <TableCell className={profits[index] > 0 ? "text-green-500" : "text-destructive"}>
-                                            {getCurrencySymbol(currency)} {displayValue(profits[index] || 0).toFixed(2)}
+                                            {getCurrencySymbol(currency)} {convertCurrency(profits[index] || 0, currency).toFixed(2)}
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -517,16 +425,14 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
                                         {getCurrencySymbol(currency)}
                                         <Input
                                             type="number"
-                                            value={inputValues.totalStake}
+                                            value={totalStake}
                                             onChange={(e) => handleTotalStakeChange(e.target.value)}
                                             className="w-24 h-8 text-center"
-                                            step="0.01"
-                                            min="0"
                                         />
                                     </TableCell>
                                     <TableCell></TableCell>
                                     <TableCell className={totalProfit > 0 ? "text-green-500" : "text-destructive"}>
-                                        {getCurrencySymbol(currency)} {displayValue(totalProfit).toFixed(2)}
+                                        {getCurrencySymbol(currency)} {convertCurrency(totalProfit, currency).toFixed(2)}
                                     </TableCell>
                                 </TableRow>
                             </TableBody>
