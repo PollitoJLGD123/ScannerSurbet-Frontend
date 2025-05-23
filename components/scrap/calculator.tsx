@@ -12,7 +12,6 @@ import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import type { DataCalculator } from "@/types/data.type"
-import { set } from "react-hook-form"
 
 export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalculator) {
     // Estado principal
@@ -21,10 +20,6 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
     const [exchangeRate, setExchangeRate] = useState(3.7)
     const [showExchangeRateInput, setShowExchangeRateInput] = useState(false)
     const [showInputSoles, setShowInputSoles] = useState(false)
-
-    function handleInputSolesChange(value: boolean) {
-        setShowInputSoles(value)
-    }
 
     // Extraer secciones (casas de apuestas) del objeto data
     const sections = useMemo(() => {
