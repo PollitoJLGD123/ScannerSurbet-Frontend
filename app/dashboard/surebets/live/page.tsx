@@ -170,6 +170,18 @@ export default function Live() {
         // The useEffect will automatically apply the filters to the current data
     }, [])
 
+    /*if (!socket || !connected) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-background">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-primary border-solid"></div>
+                    <span className="text-muted-foreground text-lg">
+                        {"Conectando..."}
+                    </span>
+                </div>
+            </div>
+        )
+    }*/
     return (
         <main className="min-h-screen bg-background text-foreground">
             <div className="max-w-full mx-auto space-y-3">

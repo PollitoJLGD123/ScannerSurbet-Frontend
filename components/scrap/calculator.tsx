@@ -401,7 +401,7 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
                                                     type="number"
                                                     value={stakes[index] || ""}
                                                     onChange={(e) => handleStakeChange(index, e.target.value)}
-                                                    className="w-24 h-8 text-center"
+                                                    className="w-24 h-8 text-center border-black/30"
                                                 />
                                             </div>
                                         </TableCell>

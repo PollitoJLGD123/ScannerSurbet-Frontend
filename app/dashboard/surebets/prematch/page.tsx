@@ -197,7 +197,7 @@ export default function Prematch() {
                             </DropdownMenu>
                         </div>
                         {filteredData.length !== bettingData.length && (
-                            <div className="bg-primary/10 border border-primary/30 rounded-lg p-3">
+                            <div className="bg-primary/10 border border-primary/30 rounded-lg p-2">
                                 <p className="text-sm text-primary">
                                     Mostrando {filteredData.length} de {bettingData.length} oportunidades
                                     {filteredData.length < bettingData.length && (
