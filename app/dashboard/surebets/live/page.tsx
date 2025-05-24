@@ -224,8 +224,8 @@ export default function Live() {
                     </div>
                 </header>
 
-                <div className="flex gap-6 w-full justify-center">
-                    <div className="grid grid-cols-1 gap-2 w-full md:w-[700px]">
+                <div className="flex gap-1 w-full justify-center">
+                    <div className="grid grid-cols-1 gap-2 w-full md:w-[580px]">
                         {sortedData.length > 0 ? (
                             sortedData.map((item, index) =>
                                 item ? (

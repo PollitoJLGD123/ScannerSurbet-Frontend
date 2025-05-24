@@ -31,6 +31,7 @@ export default function Prematch() {
         selectedBookmakers: [],
     })
     const socket = useSocketStore((state) => state.socket)
+    const reconnection = useSocketStore((state) => state.connected)
 
     // Function to apply filters to data
     const applyFiltersToData = useCallback((data: Surebet[], filters: FilterState): Surebet[] => {
@@ -68,7 +69,7 @@ export default function Prematch() {
     }, [bettingData, currentFilters, applyFiltersToData])
 
     useEffect(() => {
-        if (!socket) {
+        if (!reconnection || !socket) {
             console.log("Socket no establecido")
             return
         }
@@ -170,6 +171,18 @@ export default function Prematch() {
         // The useEffect will automatically apply the filters to the current data
     }, [])
 
+    if (!socket || !reconnection) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-background">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-primary border-solid"></div>
+                    <span className="text-muted-foreground text-lg">
+                        {"Conectando..."}
+                    </span>
+                </div>
+            </div>
+        )
+    }
     return (
         <main className="min-h-screen bg-background text-foreground">
             <div className="max-w-full mx-auto space-y-3">
@@ -211,8 +224,8 @@ export default function Prematch() {
                     </div>
                 </header>
 
-                <div className="flex gap-6 w-full justify-center">
-                    <div className="grid grid-cols-1 gap-2 w-full md:w-[600px]">
+                <div className="flex gap-1 w-full justify-center">
+                    <div className="grid grid-cols-1 gap-2 w-full md:w-[580px]">
                         {sortedData.length > 0 ? (
                             sortedData.map((item, index) =>
                                 item ? (
