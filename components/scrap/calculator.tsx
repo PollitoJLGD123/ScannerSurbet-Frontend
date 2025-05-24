@@ -264,7 +264,7 @@ export function Calculator({ data, setIsCalculated, setDataSelect }: DataCalcula
     }, [inputSoles])
 
     return (
-        <Card className="md:w-[730px] ml-4 sticky top-[70px] border shadow-md animate-in slide-in-from-right duration-300">
+        <Card className="md:w-[650px] ml-4 sticky top-[70px] border shadow-md animate-in slide-in-from-right duration-300">
             <CardHeader>
                 <div className="flex justify-between items-center">
                     <div className="flex items-center gap-2">
